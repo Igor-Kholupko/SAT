@@ -38,3 +38,8 @@ class Group(models.Model):
     class Meta:
         verbose_name = _('group')
         verbose_name_plural = _('groups')
+
+
+class StudyClass(models.Model):
+    discipline = models.ForeignKey(Discipline, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
