@@ -4,11 +4,11 @@ from django.utils import timezone
 
 
 def one_day_hence():
-    return timezone.now() + timezone.timedelta(days=1)
+    tomorrow = timezone.now() + timezone.timedelta(days=1)
+    return tomorrow.date()
 
 
 def _teacher_directory_path(instance, filename):
-    # file will be uploaded to MEDIA_ROOT/teacher_<id>/<filename>
     return 'teacher_{0}/{1}'.format(instance.user.id, filename)
 
 
@@ -21,3 +21,11 @@ class Task(models.Model):
     class Meta:
         verbose_name = _('task')
         verbose_name_plural = _('tasks')
+
+
+class Discipline(models.Model):
+    name = models.CharField( _('discipline name'), max_length=100, unique=True)
+
+    class Meta:
+        verbose_name = _('discipline')
+        verbose_name_plural = _('disciplines')
