@@ -1,8 +1,8 @@
 from django.views.generic import CreateView, DetailView
 from django.urls import reverse_lazy
 
-from labs.models import Task, Discipline
-from labs.forms import TaskForm, DisciplineForm
+from labs.models import Task, Discipline, Group
+from labs.forms import TaskForm, DisciplineForm, GroupForm
 
 
 class TaskCreate(CreateView):
@@ -29,3 +29,16 @@ class DisciplineDetail(DetailView):
     model = Discipline
     form_class = DisciplineForm
     template_name = 'labs/discipline/detail.html'
+
+
+class GroupCreate(CreateView):
+    model = Group
+    form_class = GroupForm
+    template_name = 'labs/group/create.html'
+    success_url = reverse_lazy('group_create')
+
+
+class GroupDetail(DetailView):
+    model = Group
+    form_class = GroupForm
+    template_name = 'labs/group/detail.html'

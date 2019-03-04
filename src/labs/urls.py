@@ -12,7 +12,13 @@ discipline_patterns = [
     path('create/', views.DisciplineCreate.as_view(), name='discipline_create'),
 ]
 
+group_patterns = [
+    path('<int:pk>', views.GroupDetail.as_view(), name='group_detail'),
+    path('create/', views.GroupCreate.as_view(), name='group_create'),
+]
+
 urlpatterns = [
     path('task/', include(task_patterns)),
     path('discipline/', include(discipline_patterns)),
+    path('group/', include(group_patterns)),
 ]

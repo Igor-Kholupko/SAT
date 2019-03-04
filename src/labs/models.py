@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
+from django.core.validators import MinLengthValidator
 
 
 def one_day_hence():
@@ -24,8 +25,16 @@ class Task(models.Model):
 
 
 class Discipline(models.Model):
-    name = models.CharField( _('discipline name'), max_length=100, unique=True)
+    name = models.CharField(_('discipline name'), max_length=100, unique=True)
 
     class Meta:
         verbose_name = _('discipline')
         verbose_name_plural = _('disciplines')
+
+
+class Group(models.Model):
+    number = models.CharField(_('group number'), max_length=6, validators=[MinLengthValidator(6)], unique=True)
+
+    class Meta:
+        verbose_name = _('group')
+        verbose_name_plural = _('groups')
