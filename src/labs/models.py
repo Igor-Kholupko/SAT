@@ -16,7 +16,7 @@ def _teacher_directory_path(instance, filename):
 class Task(models.Model):
     description = models.TextField(_('description'), null=True, blank=True)
     variant = models.PositiveSmallIntegerField(_('variant'), null=True, blank=True)
-    deadline = models.DateField(_('deadline'), default=one_day_hence())
+    deadline = models.DateField(_('deadline'), default=one_day_hence)
     attachment = models.FileField(_('attachment'), upload_to=_teacher_directory_path, null=True, blank=True)
 
     class Meta:
