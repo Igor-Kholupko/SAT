@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(blank=True, null=True, verbose_name='description')),
                 ('variant', models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='variant')),
                 ('deadline', models.DateField(default=datetime.datetime(2019, 3, 5, 19, 59, 35, 656523, tzinfo=utc), verbose_name='deadline')),
-                ('attachment', models.FileField(blank=True, null=True, upload_to=labs.models._teacher_directory_path, verbose_name='attachment')),
+                ('attachment', models.FileField(blank=True, null=True, upload_to=labs.models.task_upload_path, verbose_name='attachment')),
             ],
             options={
                 'verbose_name': 'task',

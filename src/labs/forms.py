@@ -1,20 +1,8 @@
 from django import forms
-from labs.models import Task, Discipline, Group
+from labs.models import Task
 
 
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ('description', 'variant', 'deadline', 'attachment')
-
-
-class DisciplineForm(forms.ModelForm):
-    class Meta:
-        model = Discipline
-        fields = ('name',)
-
-
-class GroupForm(forms.ModelForm):
-    class Meta:
-        model = Group
-        fields = ('number',)
+        fields = '__all__'

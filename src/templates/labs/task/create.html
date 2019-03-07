@@ -6,7 +6,8 @@
 </head>
 <body>
     <form method="post">{% csrf_token %}
-       {{ form }}
+        {{ form }}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{% url 'labs:task:create' %}">
         <input type="submit" value="create">
     </form>
 </body>
