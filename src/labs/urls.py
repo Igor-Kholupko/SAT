@@ -11,5 +11,6 @@ task_patterns = ([
 app_name = 'labs'
 
 urlpatterns = [
+    path('', views.index, name='index'),
     path('task/', include(task_patterns)),
 ]

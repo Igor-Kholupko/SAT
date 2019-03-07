@@ -1,15 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <form method="get">{% csrf_token %}
-        {{ object.description }}
-        {{ object.variant }}
-        {{ object.deadline }}
-        {{ object.attachment }}
-    </form>
-</body>
-</html>
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block main_content %}
+    <div>
+    {{ object.title }}
+    </div>
+    <div>
+    Description: {{ object.description }}
+    </div>
+    <div>
+    Deadline: {{ object.deadline }}
+    </div>
+    <a href="{{ object.attachment.url }}">{{ object.attachment.name }}</a>
+{% endblock %}

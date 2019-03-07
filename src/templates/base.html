@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/scripts.js' %}"></script>
+    <title>SAT</title>
+</head>
+<body>
+    <div class="page_content">
+
+        <div class="header">
+            <p id="sat_label">SAT</p>
+        </div>
+
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="close_sidenav_btn" onclick="closeNav()">&#9776;</a>
+            <a href="{% url 'labs:task:create' %}">+</a>
+            {% for element in datalist %}
+                <a href="{% url 'labs:task:details' pk=element.id %}">{{ element.title }}</a>
+            {% endfor %}
+        </div>
+
+        <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+
+        <div class="dropdown">
+            <button onclick="userDropdown()" class="user_dropdown_btn">User</button>
+            <div id="user_dropdown" class="dropdown-content">
+                <a href="profile.html">Мой профиль</a>
+                <a href="messages.html">Сообщения</a>
+                <a href="settings.html">Настройки</a>
+                <a href="signup">Выйти</a>
+            </div>
+        </div>
+
+        <div class="main_content">
+        {% block main_content %}
+            <div class="main_content_tabs">
+                <button class="tab_link" onclick="openCity(event, 'London')" id="defaultOpen">London</button>
+                <button class="tab_link" onclick="openCity(event, 'Paris')">Paris</button>
+                <button class="tab_link" onclick="openCity(event, 'Tokyo')">Tokyo</button>
+            </div>
+            <div id="London" class="tab_content" >
+                <h3>London</h3>
+                <p>London is the capital city of England.</p>
+            </div>
+
+            <div id="Paris" class="tab_content">
+                <h3>Paris</h3>
+                <p>Paris is the capital of France.</p>
+            </div>
+
+            <div id="Tokyo" class="tab_content">
+                <h3>Tokyo</h3>
+                <p>Tokyo is the capital of Japan.</p>
+            </div>
+        {% endblock %}
+        </div>
+
+        <div class="footer">
+            <p id="footer_text">Created by 2+2</p>
+        </div>
+
+    </div>
+
+
+
+    <script>
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "200px";
+    }
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+    }
+    function userDropdown() {
+        document.getElementById("user_dropdown").classList.toggle("show");
+    }
+    function changeTab(event, element) {
+
+    }
+    function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab_content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tab_link");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+    document.getElementById("defaultOpen").click();
+    </script>
+
+</body>
+</html>
