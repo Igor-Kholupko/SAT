@@ -1,0 +1,16 @@
+{% load i18n static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{% trans 'Page Not Found' %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
+    <h1 class="error-code">404</h1>
+    <h1>{% trans 'Page Not Found' %}</h1>
+    <p>{% trans 'Sorry, but the page you were trying to view does not exist.' %}</p>
+    <div class="link"><a href="{% url 'home' %}">{% trans 'Home' %}</a></div>
+</body>
+</html>
