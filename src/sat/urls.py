@@ -18,8 +18,11 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
+from sat import defaults
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', defaults.landing, name='home')
 ]
 
 if settings.DEBUG:
