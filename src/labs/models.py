@@ -115,6 +115,13 @@ class Task(models.Model):
         verbose_name_plural = _('tasks')
         unique_together = (('study_class', 'order'),)
         ordering = ('study_class', 'order',)
+        permissions = (
+            ('can_view_task_list', _('Can view task list')),
+            ('can_create_task', _('Can create task')),
+            ('can_view_task', _('Can view task')),
+            ('can_edit_task', _('Can edit task')),
+            ('can_del_task_list', _('Can delete task')),
+        )
 
     def __str__(self):
         return '{title} ({sc})'.format(title=self.title, sc=self.study_class)
