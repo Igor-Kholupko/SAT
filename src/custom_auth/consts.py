@@ -2,13 +2,15 @@ from django.utils.translation import ugettext_lazy as _
 
 GROUP_PERMISSIONS = {
     # TODO: написать права для групп
-    'students': ('can_view_task_list',
-                 'can_view_task'),
-    'teachers': ('can_view_task_list',
-                 'can_create_task',
-                 'can_view_task',
-                 'can_edit_task',
-                 'can_del_task_list'),
+    'students': (
+        {'app': 'labs', 'model': 'Task', 'codename': 'view_task', 'name': 'Can view task'},
+    ),
+    'teachers': (
+        {'app': 'labs', 'model': 'Task', 'codename': 'add_task', 'name': 'Can add task'},
+        {'app': 'labs', 'model': 'Task', 'codename': 'change_task', 'name': 'Can change task'},
+        {'app': 'labs', 'model': 'Task', 'codename': 'delete_task', 'name': 'Can delete task'},
+        {'app': 'labs', 'model': 'Task', 'codename': 'view_task', 'name': 'Can view task'},
+    )
 }
 
 FACULTIES = enumerate((
@@ -64,3 +66,8 @@ CHAIRS = enumerate((
 
     _('General Subjects'),
 ))
+
+# TODO: заполнить список специальностей: 1 параметр - код специальности, 2 параметр - название на английском
+SPECIALITIES = (
+    ('', _('')),
+)

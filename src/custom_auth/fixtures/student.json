@@ -1,0 +1,87 @@
+[
+  {
+    "model": "custom_auth.user",
+    "pk": 1,
+    "fields": {
+      "username": "6505001",
+      "password": "6505001",
+      "first_name": "Иван",
+      "surname": "Иванов",
+      "patronymic": "Иванович"
+    }
+  },
+  {
+    "model": "custom_auth.student",
+    "pk": 1,
+    "fields": {
+      "group": 1,
+      "faculty": 3,
+      "year_of_studying": 1,
+      "speciality" : 1
+    }
+  }
+  ,
+  {
+    "model": "custom_auth.user",
+    "pk": 2,
+    "fields": {
+      "username": "6505002",
+      "password": "6505002",
+      "first_name": "Петр",
+      "surname": "Петров",
+      "patronymic": "Петрович"
+    }
+  },
+  {
+    "model": "custom_auth.student",
+    "pk": 2,
+    "fields": {
+      "group": 1,
+      "faculty": 3,
+      "year_of_studying": 1,
+      "speciality" : 1
+    }
+  },
+  {
+    "model": "custom_auth.user",
+    "pk": 3,
+    "fields": {
+      "username": "6505003",
+      "password": "6505003",
+      "first_name": "Николай",
+      "surname": "Николаенко",
+      "patronymic": "Николаевич"
+    }
+  },
+  {
+    "model": "custom_auth.student",
+    "pk": 3,
+    "fields": {
+      "group": 1,
+      "faculty": 3,
+      "year_of_studying": 2,
+      "speciality" : 1
+    }
+  },
+  {
+    "model": "custom_auth.user",
+    "pk": 4,
+    "fields": {
+      "username": "6505004",
+      "password": "6505004",
+      "first_name": "Никита",
+      "surname": "Котик",
+      "patronymic": "Никитович"
+    }
+  },
+  {
+    "model": "custom_auth.student",
+    "pk": 4,
+    "fields": {
+      "group": 1,
+      "faculty": 3,
+      "year_of_studying": 3,
+      "speciality" : 1
+    }
+  }
+]

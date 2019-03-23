@@ -8,6 +8,7 @@ from django.contrib.auth.models import (
 )
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import RegexValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 from labs.models import Group as StudyGroup
 
@@ -93,7 +94,7 @@ class User(AbstractUser):
         verbose_name = _('user')
         verbose_name_plural = _('users')
         ordering = ('username',)
-        # swappable = 'AUTH_USER_MODEL'
+        swappable = 'AUTH_USER_MODEL'
 
     def clean(self):
         super(User, self).clean()
@@ -101,6 +102,9 @@ class User(AbstractUser):
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+    def natural_key(self):
+        return self.username
 
 
 class Student(models.Model):
@@ -123,9 +127,13 @@ class Student(models.Model):
         choices=FACULTIES
     )
     year_of_studying = models.PositiveSmallIntegerField(
-        _('year of study')
+        _('year of study'),
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(5)
+        ]
     )
-    specialty = models.PositiveSmallIntegerField()
+    speciality = models.PositiveSmallIntegerField()
 
     class Meta:
         verbose_name = _('student')
@@ -133,7 +141,10 @@ class Student(models.Model):
         ordering = ('group',)
 
     def get_faculty_abbreviation(self):
-        return ''.join(word[0] for word in re.split(r'\W+', self.faculty.__str__()))
+        return ''.join(word[0] for word in re.split(r'\W+', self.get_faculty_display()))
+
+    def promotion_rates(self):
+        self.year_of_studying = self.year_of_studying + 1
 
 
 class Teacher(models.Model):
@@ -174,3 +185,4 @@ class Teacher(models.Model):
     class Meta:
         verbose_name = _('teacher')
         verbose_name_plural = _('teachers')
+
