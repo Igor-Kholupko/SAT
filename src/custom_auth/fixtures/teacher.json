@@ -1,0 +1,47 @@
+[
+  {
+    "model": "custom_auth.user",
+    "pk": 5,
+    "fields": {
+      "username": "IskraNA",
+      "password": "IskraNA",
+      "first_name": "Наталья",
+      "surname": "Искра",
+      "patronymic": "Александровна",
+      "email": "natallia.iskra@gmail.com",
+      "phone_number": "+375172938617"
+    }
+  },
+  {
+    "model": "custom_auth.teacher",
+    "pk": 5,
+    "fields": {
+      "academic_position": "старший преподаватель",
+      "administrative_position": "заместитель заведующего кафедрой по учебно-методической работе",
+      "academic_degree": "магистр технических наук",
+      "auditorium" : "510а-5"
+    }
+  },
+  {
+    "model": "custom_auth.user",
+    "pk": 6,
+    "fields": {
+      "username": "LukashevichMM",
+      "password": "LukashevichMM",
+      "first_name": "Марина",
+      "surname": "Лукашевич",
+      "patronymic": "Михайловна",
+      "email": "lukashevich@bsuir.by",
+      "phone_number": "+375172938617"
+    }
+  },
+  {
+    "model": "custom_auth.teacher",
+    "pk": 6,
+    "fields": {
+      "academic_position": "доцент кафедры ЭВМ",
+      "administrative_position": "кандидат технических наук",
+      "auditorium" : "201-4"
+    }
+  }
+]

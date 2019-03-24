@@ -44,6 +44,9 @@ class Group(models.Model):
         verbose_name_plural = _('groups')
         ordering = ('number',)
 
+    def natural_key(self):
+        return self.number
+
     def __str__(self):
         return str(self.number)
 
