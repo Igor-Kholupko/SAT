@@ -34,7 +34,7 @@ class Group(_Group):
 
 
 class User(AbstractUser):
-    username_validator = RegexValidator(regex=r'^{([A-Z][a-z]+(-[A-Z][a-z]+)?[A-Z]{2})|\d{7}}$')
+    username_validator = RegexValidator(regex=r'^(([A-Z][a-z]+(-[A-Z][a-z]+)?[A-Z]{2})|\d{7})$')
     name_validator = RegexValidator(regex=r'[A-Z][a-z]+(-[A-Z][a-z]+)?')
     phone_validator = RegexValidator(regex=r'^\+?375(17|25|29|33|44)\d{7}$')
 
@@ -66,7 +66,10 @@ class User(AbstractUser):
         help_text=_('Patronymic name of a student or of a teacher.'),
         validators=[name_validator]
     )
-    email = models.EmailField(_('email address'), blank=True)
+    email = models.EmailField(
+        _('email address'),
+        blank=True
+    )
     is_active = models.BooleanField(
         _('active'),
         default=True,
@@ -75,7 +78,7 @@ class User(AbstractUser):
             'Unselect this instead of deleting accounts.'
         ),
     )
-    is_staff = True
+    is_staff = models.BooleanField(default=True)
     phone_number = models.CharField(
         _('phone number'),
         max_length=13,
@@ -88,7 +91,7 @@ class User(AbstractUser):
 
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['first_name', 'surname', 'patronymic']
+    REQUIRED_FIELDS = ['first_name', 'surname', 'patronymic', 'email']
 
     class Meta:
         verbose_name = _('user')
@@ -102,9 +105,6 @@ class User(AbstractUser):
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)
-
-    def natural_key(self):
-        return self.username
 
 
 class Student(models.Model):
