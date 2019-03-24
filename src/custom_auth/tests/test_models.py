@@ -27,7 +27,7 @@ class UserTest(TestCase):
                                               group=self.student_group,
                                               faculty=0,
                                               year_of_studying=2,
-                                              specialty=2)
+                                              speciality=2)
 
     def test_get_faculty_abbreviation(self):
         faculty_full_name = self.student.get_faculty_display()
