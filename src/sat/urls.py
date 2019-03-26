@@ -19,10 +19,12 @@ from django.contrib import admin
 from django.urls import path, include
 
 import labs.urls
+import custom_auth.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(labs.urls)),
+    path('', include(custom_auth.urls)),
 ]
 
 if settings.DEBUG:

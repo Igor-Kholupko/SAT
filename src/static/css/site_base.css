@@ -1,0 +1,152 @@
+body {
+    position: absolute;
+    margin: 0;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    font-family: "Palatino";
+    font-size: 14px;
+}
+
+.header {
+    height: 50px;
+    line-height: 50px;
+    width: 100%;
+    background-color: #00BFFF;
+}
+
+#sat_label {
+    font-size: 24px;
+    height: 50px;
+    margin: 0;
+    padding-left: 50px;
+    font-weight: bold;
+    color: white;
+    font-family: "Palatino";
+}
+/*
+#s {color: #00BFFF;}
+
+#a {color: #4dff4d;}
+
+#t {color: #f5dd5d;}
+*/
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    z-index: 1;
+    text-align: center;
+}
+
+#footer_text {
+    font-size: 14px;
+    height: 50px;
+    color: #00BFFF;
+    margin: 0;
+    text-align: center;
+}
+
+.main {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.main_content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 0 10px ;
+    margin: 10px 210px 0px 210px;
+    border-radius: 0.5em;
+    border: 1px solid #e0e0e0;
+}
+
+.left_menu {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    bottom: 0;
+    width: 200px;
+}
+
+.left_menu_menu {
+    color: #6E6E6E;
+    margin: 0;
+    padding-left: 50px;
+    height: 30px;
+    line-height: 30px;
+    border-bottom: 1px solid #e0e0e0;
+    cursor: default;
+}
+
+.left_menu_submenu_list {
+    color: #6E6E6E;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.left_menu_submenu {
+    padding-left: 50px;
+    height: 25px;
+    line-height: 25px;
+    background-color: white;
+}
+
+.left_menu_menu:hover {
+    cursor: default;
+}
+
+.left_menu_submenu:hover {
+    background-color: #efefef;
+    cursor: default;
+}
+
+.right_menu {
+    position: absolute;
+    top: 10px;
+    right: 0;
+    bottom: 0;
+    width: 200px;
+}
+
+.right_menu_form {
+    color: #6E6E6E;
+    padding-left: 50px;
+    height: 30px;
+    line-height: 30px;
+    margin: 0;
+}
+
+.right_menu_form:hover {
+    background-color: #efefef;
+    cursor: default;
+}
+
+.show {display: block;}
+
+
+ul.errorlist {
+    margin-bottom: 0;
+    padding-inline-start: 0;
+    list-style-type: none;
+}
+ul.errorlist.nonfield {
+    margin-bottom: 1rem;
+}
+ul.errorlist li {
+    text-align: left;
+    color: darkred;
+}

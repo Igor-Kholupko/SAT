@@ -1,0 +1,31 @@
+{% extends "site_base.html" %}
+{% load static i18n %}
+{% block extrahead %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+{% block title %}{% trans 'Welcome! | SAT' %}{% endblock %}
+{% block main %}
+    <div class="content">
+    <form id="loginForm" method="post">{% csrf_token %}
+        <p class="form-control" id="welcome">{% trans "Welcome" %}</p>
+        <ul class="errorlist nonfield">
+        </ul>
+        <div>
+            <ul class="errorlist username">
+            </ul>
+            <input class="form-control" type="text" id="inputLogin" placeholder="{% trans "Username" %}" autofocus="" name="username">
+        </div>
+        <div>
+            <ul class="errorlist password">
+            </ul>
+            <input class="form-control" type="password" id="inputPassword" placeholder="{% trans "Password" %}" name="password">
+        </div>
+        <a class="form-control" id="forgetPassword">{% trans "Forgotten your password?" %}</a>
+        <button class="form-control" id="btn" type="submit">{% trans "Log in" %}</button>
+    </form>
+    </div>
+
+{% endblock %}
+{% block trailing_js %}
+    <script type="text/javascript" src="{% static 'js/login_ajax_handler.js' %}"></script>
+{% endblock %}
