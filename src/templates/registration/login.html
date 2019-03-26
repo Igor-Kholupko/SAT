@@ -3,16 +3,21 @@
 {% block head %}
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <title>{% block title %}{% trans 'Welcome! | SAT' %}{% endblock %}</title>
 {% endblock %}
 {% block main %}
     <div class="content">
-    <form method="post">
-        {% csrf_token %}
-        <p class="form-control" id="welcome">Добро пожаловать</p>
-        <input class="form-control" type="text" id="inputLogin" placeholder="Логин" autofocus="" name="username">
-        <input class="form-control" type="password" id="inputPassword" placeholder="Пароль" name="password">
-        <a class="form-control" id="forgetPassword">Забыли пароль?</a>
-        <button class="form-control" id="btn" type="submit">Войти</button>
+    <form method="post">{% csrf_token %}
+        <p class="form-control" id="welcome">{% trans "Welcome" %}</p>
+        <input class="form-control" type="text" id="inputLogin" placeholder="{% trans "Username" %}" autofocus="" name="username">
+        <input class="form-control" type="password" id="inputPassword" placeholder="{% trans "Password" %}" name="password">
+        {% if form.errors %}
+            <p class="label label-danger">
+                {% trans "Your username and password didn't match. Please try again." %}
+            </p>
+        {% endif %}
+        <a class="form-control" id="forgetPassword">{% trans "Forgotten your password?" %}</a>
+        <button class="form-control" id="btn" type="submit">{% trans "Log in" %}</button>
     </form>
     </div>
 {% endblock %}

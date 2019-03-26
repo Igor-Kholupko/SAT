@@ -35,7 +35,7 @@ class Group(_Group):
 
 class User(AbstractUser):
     username_validator = RegexValidator(regex=r'^(([A-Z][a-z]+(-[A-Z][a-z]+)?[A-Z]{2})|\d{7})$')
-    name_validator = RegexValidator(regex=r'[A-Z][a-z]+(-[A-Z][a-z]+)?')
+    name_validator = RegexValidator(regex=r'[A-ZА-ЯЁ][a-zа-яё]+(-[A-ZА-ЯЁ][a-zа-яё]+)?')
     phone_validator = RegexValidator(regex=r'^\+?375(17|25|29|33|44)\d{7}$')
 
     username = models.CharField(

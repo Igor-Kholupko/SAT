@@ -8,7 +8,7 @@ from django.views.decorators.debug import sensitive_post_parameters
 
 
 class LoginView(_LoginView):
-    # @method_decorator(user_passes_test(lambda u: not u.is_authenticated, login_url=reverse_lazy('home')))
+    @method_decorator(user_passes_test(lambda u: not u.is_authenticated, login_url=reverse_lazy('labs:dashboard')))
     @method_decorator(sensitive_post_parameters())
     @method_decorator(csrf_protect)
     @method_decorator(never_cache)
