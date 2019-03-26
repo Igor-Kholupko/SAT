@@ -11,6 +11,6 @@ task_patterns = ([
 app_name = 'labs'
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('dashboard/', views.dashboard, name='dashboard'),
     path('task/', include(task_patterns)),
 ]
