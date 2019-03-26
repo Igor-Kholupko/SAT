@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "site_base.html" %}
+{% load static i18n %}
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+{% block main %}
+    <div class="content">
+    <form method="post">
+        {% csrf_token %}
+        <p class="form-control" id="welcome">Добро пожаловать</p>
+        <input class="form-control" type="text" id="inputLogin" placeholder="Логин" autofocus="" name="username">
+        <input class="form-control" type="password" id="inputPassword" placeholder="Пароль" name="password">
+        <a class="form-control" id="forgetPassword">Забыли пароль?</a>
+        <button class="form-control" id="btn" type="submit">Войти</button>
+    </form>
+    </div>
+{% endblock %}

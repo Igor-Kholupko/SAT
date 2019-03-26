@@ -1,0 +1,67 @@
+.main {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 300px;
+    height: 400px;
+}
+
+.content {
+    display:table-cell;
+    vertical-align:middle;
+    height: 400px;
+    width: 300px;
+    text-align: center;
+}
+
+.form-control {
+    margin-bottom: 6px;
+    display: block;
+    padding: 0px 11px 0px 11px;
+    height: 40px;
+    line-height: 40px;
+    border: 0;
+    border-radius: .3rem;
+}
+
+#forgetPassword {
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+    color: #00BFFF;
+}
+
+#btn {
+    color: #fff;
+    width: 75%;
+    margin: auto;
+    background-color: #00BFFF;
+    border-color: #007bff;
+    font-weight: bold;
+}
+
+#welcome {
+    font-size: 24px;
+    color: #6E6E6E;
+}
+
+#inputLogin {
+    border: 1px solid #e0e0e0;
+    background-color: white;
+}
+
+#inputPassword {
+    border: 1px solid #e0e0e0;
+    background-color: white;
+}
+
+#forgetPassword:visited {
+    color: #00BFFF;
+}
+
+.show {display: block;}
+
+
