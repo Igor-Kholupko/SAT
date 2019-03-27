@@ -99,6 +99,9 @@ class User(AbstractUser):
         ordering = ('username',)
         swappable = 'AUTH_USER_MODEL'
 
+    def __str__(self):
+        return '{srn} {fn}. {ptr}.'.format(srn=self.surname, fn=self.first_name[0], ptr=self.patronymic[0])
+
     def clean(self):
         super(User, self).clean()
         self.email = self.__class__.objects.normalize_email(self.email)
@@ -139,6 +142,9 @@ class Student(models.Model):
         verbose_name = _('student')
         verbose_name_plural = _('students')
         ordering = ('group',)
+
+    def __str__(self):
+        return '{grp}: {fn}'.format(grp=self.group, fn=self.user)
 
     def get_faculty_abbreviation(self):
         return ''.join(word[0] for word in re.split(r'\W+', self.get_faculty_display()))
@@ -185,4 +191,8 @@ class Teacher(models.Model):
     class Meta:
         verbose_name = _('teacher')
         verbose_name_plural = _('teachers')
+
+    def __str__(self):
+        degree = self.academic_degree if self.academic_degree else self.academic_position
+        return '{dgr}: {fn}'.format(dgr=degree, fn=self.user)
 
