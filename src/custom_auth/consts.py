@@ -1,11 +1,14 @@
 from django.utils.translation import ugettext_lazy as _
 
+STUDENTS_GROUP = 'students'
+TEACHERS_GROUP = 'teachers'
+
 GROUP_PERMISSIONS = {
     # TODO: написать права для групп
-    'students': (
+    STUDENTS_GROUP: (
         {'app': 'labs', 'model': 'Task', 'codename': 'view_task', 'name': 'Can view task'},
     ),
-    'teachers': (
+    TEACHERS_GROUP: (
         {'app': 'labs', 'model': 'Task', 'codename': 'add_task', 'name': 'Can add task'},
         {'app': 'labs', 'model': 'Task', 'codename': 'change_task', 'name': 'Can change task'},
         {'app': 'labs', 'model': 'Task', 'codename': 'delete_task', 'name': 'Can delete task'},

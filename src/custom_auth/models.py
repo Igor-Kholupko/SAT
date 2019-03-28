@@ -12,7 +12,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 from labs.models import Group as StudyGroup
 
-from custom_auth.consts import FACULTIES
+from custom_auth.consts import FACULTIES, TEACHERS_GROUP, STUDENTS_GROUP
 
 
 class Group(_Group):
@@ -99,12 +99,30 @@ class User(AbstractUser):
         ordering = ('username',)
         swappable = 'AUTH_USER_MODEL'
 
+    def __str__(self):
+        return '{srn} {fn}. {ptr}.'.format(srn=self.surname, fn=self.first_name[0], ptr=self.patronymic[0])
+
     def clean(self):
         super(User, self).clean()
         self.email = self.__class__.objects.normalize_email(self.email)
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+    @property
+    def is_teacher(self):
+        return self.groups.filter(name__exact=TEACHERS_GROUP).exists() and hasattr(self, 'teacher')
+
+    @property
+    def is_student(self):
+        return self.groups.filter(name__exact=STUDENTS_GROUP).exists() and hasattr(self, 'student')
+
+    def has_perms(self, perm_list, obj=None, as_user=None):
+        if obj is None or as_user is None:
+            return super().has_perms(perm_list)
+        if not hasattr(self, as_user) or not hasattr(self, 'is_%s' % as_user) or not super().has_perms(perm_list):
+            return False
+        return getattr(self, 'is_%s' % as_user, False) and getattr(self, as_user).has_perm(obj)
 
 
 class Student(models.Model):
@@ -140,11 +158,17 @@ class Student(models.Model):
         verbose_name_plural = _('students')
         ordering = ('group',)
 
+    def __str__(self):
+        return '{grp}: {fn}'.format(grp=self.group, fn=self.user)
+
     def get_faculty_abbreviation(self):
         return ''.join(word[0] for word in re.split(r'\W+', self.get_faculty_display()))
 
     def promotion_rates(self):
         self.year_of_studying = self.year_of_studying + 1
+
+    def has_perm(self, task):
+        return self.group.study_classes.filter(task=task).exists()
 
 
 class Teacher(models.Model):
@@ -186,3 +210,9 @@ class Teacher(models.Model):
         verbose_name = _('teacher')
         verbose_name_plural = _('teachers')
 
+    def __str__(self):
+        degree = self.academic_degree if self.academic_degree else self.academic_position
+        return '{dgr}: {fn}'.format(dgr=degree, fn=self.user)
+
+    def has_perm(self, task):
+        return self.study_classes.filter(task=task).exists()

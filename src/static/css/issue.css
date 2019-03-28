@@ -1,0 +1,119 @@
+.main_content {
+    padding-bottom: 0.5%;
+}
+
+.task_name_area {
+    width: 100%;
+    height: 5%;
+    line-height: 5%;
+    text-align: center;
+    border: none;
+}
+
+.task_name {
+    padding-right: 1%;
+    padding-left: 1%;
+    width: 100%;
+    height: 100%;
+    color: #6E6E6E;
+    border: none;
+    font-family: "Palatino";
+    font-size: 14px;
+}
+
+.issue {
+    width: 100%;
+    height: 90%;
+}
+
+.issue .task_table_area {
+    float: left;
+    height: 100%;
+    width: 70%;
+    padding: 0;
+    border-radius: 0.5em;
+    border: 1px solid #e0e0e0;
+}
+
+.issue .table {
+    width: 98%;
+    margin: 1% auto 1% auto;
+}
+
+.issue .task_area {
+    height: 100%;
+    width: 30%;
+    margin-left: 70%;
+    padding-left: 1%;
+    border: none;
+}
+
+.issue .task_text_area {
+    height: 75%;
+    padding: 2%;
+    border-radius: 0.5em;
+    border: 1px solid #e0e0e0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.issue .task_text {
+    padding: 1%;
+    height: 93%;
+    width: 100%;
+    font-family: "Palatino";
+    font-size: 14px;
+    color: #6E6E6E;
+    border: none;
+}
+
+.attach_btn_area {
+    width: 100%;
+    height: 6%;
+    margin-bottom: 1%;
+    border: none;
+}
+
+.attach_btn {
+    float: right;
+    width: 90px;
+    height: 100%;
+    padding: 0;
+    font-weight: bold;
+    color: #6E6E6E;
+    font-size: 8pt;
+    background-color: #ffffff;
+    border: 1px solid #6E6E6E;
+    border-radius: .3rem;
+}
+
+.issue .task_files {
+    height: 25%;
+    border-radius: 0.5em;
+    border: 1px solid #e0e0e0;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-top: none;
+}
+
+.issue_btn_area {
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding-top: 0.5%;
+    height: 5%;
+    border: none;
+}
+
+.issue_btn {
+    width: 90px;
+    height: 100%;
+    float: right;
+    padding: 0;
+    background-color: #00BFFF;
+    font-weight: bold;
+    color: #fff;
+    border: 0;
+    border-radius: .3rem;
+}
+

@@ -51,9 +51,18 @@ class Group(models.Model):
         return str(self.number)
 
 
+from custom_auth.models import Teacher, Student
+
+
 class StudyClass(models.Model):
     discipline = models.ForeignKey(
         Discipline,
+        on_delete=models.CASCADE,
+        related_name='study_classes',
+        related_query_name='study_class'
+    )
+    teacher = models.ForeignKey(
+        Teacher,
         on_delete=models.CASCADE,
         related_name='study_classes',
         related_query_name='study_class'
@@ -120,8 +129,95 @@ class Task(models.Model):
         ordering = ('study_class', 'order',)
 
     def __str__(self):
-        return '{title} ({sc})'.format(title=self.title, sc=self.study_class)
+        return '{title}'.format(title=self.title)
 
     def clean(self):
         data = super().clean()
         return data
+
+
+class Lesson(models.Model):
+    study_class = models.ForeignKey(
+        StudyClass,
+        on_delete=models.CASCADE,
+        related_name='lessons',
+        related_query_name='lesson',
+        verbose_name=_('study class')
+    )
+    date = models.DateField(_('date'))
+
+    class Meta:
+        verbose_name = _('lesson')
+        verbose_name_plural = _('lessons')
+        ordering = ('study_class', 'date',)
+
+    def __str__(self):
+        return '{date} {sc}'.format(date=self.date, sc=self.study_class)
+
+
+class Attendance(models.Model):
+    student = models.ForeignKey(
+        Student,
+        on_delete=models.CASCADE,
+        related_name='attendances',
+        related_query_name='attendance',
+        verbose_name=_('student')
+    )
+    lesson = models.ForeignKey(
+        Lesson,
+        on_delete=models.CASCADE,
+        related_name='attendances',
+        related_query_name='attendance',
+        verbose_name=_('lesson')
+    )
+    attendance = models.BooleanField(
+        _('attendance'),
+        default=True
+    )
+
+    class Meta:
+        verbose_name = _('attendance')
+        verbose_name_plural = _('attendances')
+        ordering = ('lesson', 'student',)
+
+    def __str__(self):
+        return '{ls} {std} {atn}'.format(ls=self.lesson, std=self.student, atn=self.attendance)
+
+
+class Mark(models.Model):
+    student = models.ForeignKey(
+        Student,
+        on_delete=models.CASCADE,
+        related_name='marks',
+        related_query_name='mark',
+        verbose_name=_('student')
+    )
+    lesson = models.ForeignKey(
+        Lesson,
+        on_delete=models.CASCADE,
+        related_name='marks',
+        related_query_name='mark',
+        verbose_name=_('lesson')
+    )
+    task = models.ForeignKey(
+        Task,
+        on_delete=models.CASCADE,
+        related_name='marks',
+        related_query_name='mark',
+        verbose_name=_('task')
+    )
+    mark = models.CharField(
+        _('mark'),
+        max_length=128,
+        blank=True,
+        null=True
+    )
+
+    class Meta:
+        verbose_name = _('mark')
+        verbose_name_plural = _('marks')
+        unique_together = (('student', 'task'),)
+        ordering = ('lesson', 'task', 'student',)
+
+    def __str__(self):
+        return '{mrk}'.format(mrk=self.mark)

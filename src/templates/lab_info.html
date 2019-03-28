@@ -1,0 +1,42 @@
+{% load labs_helpers %}
+<div class="lab_info">
+    <div class="student_list" >
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th class="number_header" scope="col">№</th>
+                    <th class="fio_header" scope="col">ФИО</th>
+                    <th class="date_header" scope="col">Дата сдачи</th>
+                    <th class="mark_header" scope="col">Отметка</th>
+                    <th class="option_header" scope="col">Вариант</th>
+                    <th class="node_header" scope="col" style="width: 35%">Примечание</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for student, attandences, marks in students_list %}
+                <tr>
+                    {% with marks|get_item:task.id as mark %}
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ student.user|stringformat:"s" }}</td>
+                            <td class="date">{% if mark %}{{ mark.lesson.date|date }}{% else %}-{% endif %}</td>
+                            <td class="mark student-{{ student.user.pk }} task-{{ task.pk }}">{% if mark %}{{ mark|stringformat:"s" }}{% else %}-{% endif %}</td>
+                        <td></td>
+                        <td></td>
+                    {% endwith %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="task_area">
+        <div class="task_text_area">
+            <p class="task_text">{{ task.description }}</p>
+        </div>
+        <div class="task_files">
+
+        </div>
+    </div>
+</div>
+<div class="ask_btn_area">
+    <button class="ask_btn" type="submit">Задать вопрос</button>
+</div>

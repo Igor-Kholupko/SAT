@@ -1,4 +1,153 @@
 {% extends 'site_base.html' %}
-{% block main_content %}
-
+{% load static i18n %}
+{% block extrahead %}
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/group_info.css' %}">
+    <link rel="stylesheet" href="{% static 'css/lab_info.css' %}">
+    <link rel="stylesheet" href="{% static 'css/issue.css' %}">
+{% endblock %}
+{% block left_menu %}
+    {% for group_name, group_menu in menu.items %}
+        {% if not forloop.first or not forloop.last %}
+            <p class="left_menu_menu">{{ group_name }}</p>
+        {% endif %}
+        {% for menu_value, submenu in group_menu.items %}
+            <p class="left_menu_menu">{{ menu_value }}</p>
+            <ul class="left_menu_submenu_list">
+            {% for  submenu_value in submenu %}
+                <li class="left_menu_submenu" value="{{ submenu_value.1 }}">{{ submenu_value.0 }}</li>
+            {% endfor %}
+            </ul>
+        {% endfor %}
+    {% endfor %}
+{% endblock %}
+{% block trailing_js %}
+<script type="text/javascript">
+    $(document).on('click', '.left_menu_submenu', function() {
+        $.ajax({
+            type: "GET",
+            url: "/dashboard/",
+            data: this.getAttribute('value'),
+            success: function (response) {
+                // console.log(response);
+                $('div.main_content').html(response);
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+    });
+    {% if user.is_teacher %}
+    $(document).on('click', 'td.mark', function (event) {
+        event.preventDefault();
+        let student_id = 0;
+        let task_id = 0;
+        for (let i=0, l=this.classList.length; i<l; ++i) {
+            if(/student-.*/.test(this.classList[i])) student_id = this.classList[i].split('-')[1];
+            if(/task-.*/.test(this.classList[i])) task_id = this.classList[i].split('-')[1];
+        }
+        if (!student_id || !task_id) return;
+        this.setAttribute('value', $(this).html());
+        this.classList.replace('mark', 'mark-edit');
+        $(this).html(
+            '<form id="setMark" method="post">' + '{% csrf_token %}' +
+            '<input type="hidden" name="action" value="post_mark">' +
+            '<input type="hidden" name="student" value="' + student_id + '"><input type="hidden" name="task" value="' + task_id + '">' +
+            '<input type="text" name="mark"><input type="submit" value="Save"><input type="reset" value="Cancel">' +
+            '</form>'
+        );
+    });
+    $(document).on('submit', '#setMark', function (event) {
+        event.preventDefault();
+        let parent = this.parentNode;
+        let this_form = this;
+        let form_data = {};
+        $.each($(this).serializeArray(), function () {
+            form_data[this.name] = this.value;
+        });
+        if (!form_data['mark']) {
+            this.reset();
+            return;
+        }
+        $.ajax({
+            type: this.method,
+            url: '/dashboard/',
+            data: $(this).serialize(),
+            success: function (response) {
+                parent.classList.replace('mark-edit', 'mark');
+                $(parent).html(response.new_mark);
+                console.log($(parent).parent().find('.date'));
+                $(parent).parent().find('.date').html(response.new_date);
+                parent.removeAttribute('value');
+            },
+            error: function (response) {
+                console.log(response);
+                this_form.reset();
+            }
+        });
+    });
+    $(document).on('reset', '#setMark', function (event) {
+        event.preventDefault();
+        let parent = this.parentNode;
+        parent.classList.replace('mark-edit', 'mark');
+        $(parent).html(parent.getAttribute('value'));
+        parent.removeAttribute('value');
+    });
+    $(document).on('submit', '#createTask', function (event) {
+        event.preventDefault();
+        $.ajax({
+            type: this.method,
+            url: '/dashboard/',
+            data: $(this).serialize(),
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+    });
+    $(document).on('click', 'th.attendance', function (event) {
+        event.preventDefault();
+        let student_id = 0;
+        let lesson_id = 0;
+        for (let i=0, l=this.classList.length; i<l; ++i) {
+            if(/student-.*/.test(this.classList[i])) student_id = this.classList[i].split('-')[1];
+            if(/lesson-.*/.test(this.classList[i])) lesson_id = this.classList[i].split('-')[1];
+        }
+        if (!student_id || !lesson_id) return;
+        this.setAttribute('value', $(this).html());
+        let checked = '';
+        if ($(this).html() === '+') checked = ' checked';
+        this.classList.replace('attendance', 'attendance-edit');
+        $(this).html(
+            '<form id="setAttendance" method="post">' + '{% csrf_token %}' +
+            '<input type="hidden" name="action" value="post_attendance">' +
+            '<input type="hidden" name="student" value="' + student_id + '"><input type="hidden" name="lesson" value="' + lesson_id + '">' +
+            '<input type="checkbox" name="attendance"' + checked + '><input type="submit" value="Save">' +
+            '</form>'
+        );
+    });
+    $(document).on('submit', '#setAttendance', function (event) {
+        event.preventDefault();
+        let parent = this.parentNode;
+        $.ajax({
+            type: this.method,
+            url: '/dashboard/',
+            data: $(this).serialize(),
+            success: function (response) {
+                $(parent).html(response);
+                parent.classList.replace('attendance-edit', 'attendance');
+                parent.removeAttribute('value');
+            },
+            error: function (response) {
+                console.log(response);
+                $(parent).html(parent.getAttribute('value'));
+                parent.classList.replace('attendance-edit', 'attendance');
+                parent.removeAttribute('value');
+            }
+        });
+    });
+    {% endif %}
+</script>
 {% endblock %}
