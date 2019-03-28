@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 
 
-class AjaxableResponseMixin:
+class AjaxableLoginResponseMixin:
     """
     Mixin to add AJAX support to a form.
     Must be used with an object-based FormView (e.g. CreateView)
@@ -34,7 +34,7 @@ class AjaxableResponseMixin:
             return response
 
 
-class LoginView(AjaxableResponseMixin, _LoginView):
+class LoginView(AjaxableLoginResponseMixin, _LoginView):
     @method_decorator(user_passes_test(lambda u: not u.is_authenticated, login_url=reverse_lazy('labs:dashboard')))
     @method_decorator(sensitive_post_parameters())
     @method_decorator(csrf_protect)

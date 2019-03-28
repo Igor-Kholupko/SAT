@@ -1,7 +1,7 @@
 # User-defined
 .idea
 media/
-static/
+/static/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

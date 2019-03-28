@@ -111,8 +111,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'custom_auth.User'
 
+LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/dashboard/'
-LOGOUT_REDIRECT_URL = '/login/'
+LOGOUT_REDIRECT_URL = LOGIN_URL
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/

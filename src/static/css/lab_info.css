@@ -1,0 +1,82 @@
+.lab_info {
+    width: 100%;
+    height: 95%;
+    border: none;
+}
+
+.main_content {
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
+}
+
+.lab_info .table {
+    width: 98%;
+    margin: 1% auto 1% auto;
+}
+
+.lab_info .student_list {
+    position: relative;
+    float: left;
+    padding: 0;
+    height: 100%;
+    width: 70%;
+    border-radius: 0.5em;
+    border: 1px solid #e0e0e0;
+}
+
+.lab_info .task_area {
+    height: 100%;
+    width: 30%;
+    margin-left: 70%;
+    padding-left: 1%;
+    border: none;
+}
+
+.lab_info .task_text_area {
+    height: 75%;
+    border-radius: 0.5em;
+    border: 1px solid #e0e0e0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.lab_info .task_text {
+    margin: 2%;
+    padding: 0%;
+    height: 98%;
+    width: 96%;
+    font-family: "Palatino";
+    font-size: 14px;
+    color: #6E6E6E;
+    border: none;
+}
+
+.lab_info .task_files {
+    height: 25%;
+    border-radius: 0.5em;
+    border: 1px solid #e0e0e0;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-top: none;
+}
+
+.ask_btn_area {
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding-top: 0.5%;
+    height: 5%;
+    border: none;
+}
+
+.ask_btn {
+    width: 150px;
+    height: 100%;
+    float: right;
+    padding: 0;
+    background-color: #00BFFF;
+    font-weight: bold;
+    color: #fff;
+    border: 0;
+    border-radius: .3rem;
+}

@@ -1,0 +1,45 @@
+<form id="createTask" method="post" style="height: 100%">{% csrf_token %}
+<input type="hidden" name="action" value="post_task">
+<input type="hidden" name="study_class" value="{{ sc.pk }}">
+    <div class="task_name_area">
+        <input type="text" class="task_name" name="title" placeholder="Название лабораторной работы">
+    </div>
+    <div class="issue">
+        <div class="task_table_area" >
+            <table class="table table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="number_header" scope="col">№</th>
+                        <th class="fio_header" scope="col">ФИО</th>
+                        <th class="option_header" scope="col">Вариант</th>
+                        <th class="node_header" scope="col">Примечание</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for student, attandences, marks in students_list %}
+                    <tr>
+                        <th scope="row" >{{ forloop.counter }}</th>
+                        <td>{{ student.user|stringformat:"s" }}</td>
+                        <td><input type="text" class="option_input"></td>
+                        <td><input type="text" class="node_input"></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="task_area">
+            <div class="task_text_area">
+                <textarea class="task_text" name="description" placeholder="Введите текст задания"></textarea>
+                <div class="attach_btn_area">
+                    <button class="attach_btn" type="submit">Выберите файл</button>
+                </div>
+            </div>
+            <div class="task_files">
+
+            </div>
+        </div>
+    </div>
+    <div class="issue_btn_area">
+        <button class="issue_btn" type="submit">Выдать</button>
+    </div>
+</form>

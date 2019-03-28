@@ -12,7 +12,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 from labs.models import Group as StudyGroup
 
-from custom_auth.consts import FACULTIES
+from custom_auth.consts import FACULTIES, TEACHERS_GROUP, STUDENTS_GROUP
 
 
 class Group(_Group):
@@ -109,6 +109,21 @@ class User(AbstractUser):
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
+    @property
+    def is_teacher(self):
+        return self.groups.filter(name__exact=TEACHERS_GROUP).exists() and hasattr(self, 'teacher')
+
+    @property
+    def is_student(self):
+        return self.groups.filter(name__exact=STUDENTS_GROUP).exists() and hasattr(self, 'student')
+
+    def has_perms(self, perm_list, obj=None, as_user=None):
+        if obj is None or as_user is None:
+            return super().has_perms(perm_list)
+        if not hasattr(self, as_user) or not hasattr(self, 'is_%s' % as_user) or not super().has_perms(perm_list):
+            return False
+        return getattr(self, 'is_%s' % as_user, False) and getattr(self, as_user).has_perm(obj)
+
 
 class Student(models.Model):
     user = models.OneToOneField(
@@ -151,6 +166,9 @@ class Student(models.Model):
 
     def promotion_rates(self):
         self.year_of_studying = self.year_of_studying + 1
+
+    def has_perm(self, task):
+        return self.group.study_classes.filter(task=task).exists()
 
 
 class Teacher(models.Model):
@@ -196,3 +214,5 @@ class Teacher(models.Model):
         degree = self.academic_degree if self.academic_degree else self.academic_position
         return '{dgr}: {fn}'.format(dgr=degree, fn=self.user)
 
+    def has_perm(self, task):
+        return self.study_classes.filter(task=task).exists()

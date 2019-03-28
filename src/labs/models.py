@@ -50,7 +50,9 @@ class Group(models.Model):
     def __str__(self):
         return str(self.number)
 
+
 from custom_auth.models import Teacher, Student
+
 
 class StudyClass(models.Model):
     discipline = models.ForeignKey(
@@ -79,7 +81,7 @@ class StudyClass(models.Model):
         ordering = ('discipline', 'group',)
 
     def __str__(self):
-        return '{dsc} {tch} {grp}'.format(dsc=self.discipline, tch=self.teacher, grp=self.group)
+        return '{dsc} {grp}'.format(dsc=self.discipline, grp=self.group)
 
 
 class Task(models.Model):
@@ -127,7 +129,7 @@ class Task(models.Model):
         ordering = ('study_class', 'order',)
 
     def __str__(self):
-        return '{title} ({sc})'.format(title=self.title, sc=self.study_class)
+        return '{title}'.format(title=self.title)
 
     def clean(self):
         data = super().clean()
@@ -214,7 +216,8 @@ class Mark(models.Model):
     class Meta:
         verbose_name = _('mark')
         verbose_name_plural = _('marks')
+        unique_together = (('student', 'task'),)
         ordering = ('lesson', 'task', 'student',)
 
     def __str__(self):
-        return '{ls} {tsk} {std} {mrk}'.format(ls=self.lesson, tsk=self.task, std=self.student, mrk=self.mark)
+        return '{mrk}'.format(mrk=self.mark)
