@@ -6,6 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
+from django.shortcuts import redirect
 
 
 class AjaxableLoginResponseMixin:
@@ -41,3 +42,9 @@ class LoginView(AjaxableLoginResponseMixin, _LoginView):
     @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+
+
+def redirect_from_start_page(request):
+    if request.user.is_anonymous:
+        return redirect('login')
+    return redirect('labs:dashboard')
