@@ -201,7 +201,7 @@ class Teacher(models.Model):
     )
     auditorium = models.CharField(
         _('auditorium'),
-        max_length=5,
+        max_length=6,
         help_text=_("Required. Format: auditorium-campus."),
         validators=[auditorium_validator]
     )

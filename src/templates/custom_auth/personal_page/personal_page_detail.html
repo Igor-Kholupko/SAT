@@ -1,0 +1,39 @@
+{% extends 'site_base.html' %}
+{% load staticfiles i18n %}
+{% block content %}
+    <form action="{% url 'personal_info_detail' user.id %}" method="post">{% csrf_token %}
+        <div>
+            {% for field in  personal_info %}
+            <div>
+                {{ field.errors }}
+                {{ field.label_tag }}
+                {{ field }}
+            </div>
+            {% endfor %}
+        </div>
+        <div>
+            {% if teacher_info %}
+                {% for field in teacher_info %}
+                    <div>
+                        {{ field.errors }}
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% if student_info %}
+                {% for field in student_info %}
+                    <div>
+                        {{ field.errors }}
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <button type="submit">{% trans "Сохранить изменения" %}</button>
+
+    </form>
+
+
+{% endblock %}
