@@ -216,3 +216,8 @@ class Teacher(models.Model):
 
     def has_perm(self, task):
         return self.study_classes.filter(task=task).exists()
+
+    def get_url(self):
+        surname = self.user.username[:-2].lower()
+        initials = '-'.join(self.user.username[-2:].lower())
+        return surname + '-' + initials

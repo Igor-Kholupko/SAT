@@ -2,7 +2,7 @@ import re
 
 from django.test import TestCase
 
-from custom_auth.models import Group, User, Student
+from custom_auth.models import Group, User, Student, Teacher
 from labs.models import Group as StudyGroup
 
 
@@ -23,6 +23,8 @@ class UserTest(TestCase):
                                                 patronymic='Петрович')
 
         self.student_group = StudyGroup.objects.create(number='650501')
+        self.teacher = Teacher.objects.create(user=self.teacher_user,
+                                              auditorium='509a-5')
         self.student = Student.objects.create(user=self.student_user,
                                               group=self.student_group,
                                               faculty=0,
@@ -38,6 +40,21 @@ class UserTest(TestCase):
         next_year_of_study = self.student.year_of_studying + 1
         self.student.promotion_rates()
         self.assertEqual(next_year_of_study, self.student.year_of_studying)
+
+    def test_simple_get_url(self):
+        self.assertEqual('petrov-p-p', self.teacher.get_url())
+
+    def test_complex_get_url(self):
+        teacher_password = User.objects.make_random_password()
+        teacher_user = User.objects.create(username='Tashlukova-BushkevichII',
+                                           password=teacher_password,
+                                           first_name='Ия',
+                                           surname='Ташлыкова-Бушкевич',
+                                           patronymic='Игоревна')
+
+        teacher = Teacher.objects.create(user=teacher_user,
+                                         auditorium='409a-4')
+        self.assertEqual('tashlukova-bushkevich-i-i', teacher.get_url())
 
 
 class GroupTest(TestCase):

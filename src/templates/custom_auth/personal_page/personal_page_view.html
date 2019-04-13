@@ -1,0 +1,33 @@
+{% extends 'site_base.html' %}
+{% load staticfiles i18n %}
+{% block content %}
+    <div>
+        <p>
+            {{ person.surname }}
+            {{ person.first_name }}
+            {{ person.patronymic }}
+        </p>
+    </div>
+    <div>
+        {% if person.is_teacher %}
+            <p>{{ person.teacher.academic_position }}</p>
+            <p>{{ person.teacher.administrative_position }}</p>
+            <p>{{ person.teacher.academic_degree }}</p>
+            <p>{% trans "Аудитория:" %} {{ person.teacher.auditorium }}</p>
+        {% elif personal_info.is_student %}
+            <p>{{ person.student.get_faculty_display }}</p>
+            <p>{% trans "Специальность:" %} {{ person.student.speciality }}</p>
+            <p>{% trans "Курс:" %} {{ person.student.year_of_studying }}</p>
+            <p>{% trans "Группа:" %} {{ person.student.group }}</p>
+        {% endif %}
+    </div>
+    <div>
+        {% if person.phone is not None %}
+            <p>{% trans "Телефон:" %} {{ person.phone }}</p>
+        {% endif %}
+        <p>
+            {% trans "Электронная почта:" %} {{ person.email }}
+        </p>
+    </div>
+
+{% endblock %}
