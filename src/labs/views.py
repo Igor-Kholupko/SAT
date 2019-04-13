@@ -12,6 +12,14 @@ from labs.forms import TaskForm, MarkSetForm, AttendanceSetForm
 
 
 class UserContextMixin(LoginRequiredMixin, ContextMixin):
+    def get_redirect_field_name(self):
+        return None
+
+    def handle_no_permission(self):
+        redirect = super().handle_no_permission()
+        self.request.session[super().get_redirect_field_name()] = self.request.get_full_path()
+        return redirect
+
     def get_context_data(self, **kwargs):
         menu = {}
         if self.request.method == 'GET' and not self.request.is_ajax():
