@@ -38,7 +38,7 @@
         });
     });
     {% if user.is_teacher %}
-    $(document).on('click', 'td.mark', function (event) {
+    $(document).on('click', 'td.mark.editable', function (event) {
         event.preventDefault();
         let student_id = 0;
         let task_id = 0;
@@ -76,7 +76,6 @@
             success: function (response) {
                 parent.classList.replace('mark-edit', 'mark');
                 $(parent).html(response.new_mark);
-                console.log($(parent).parent().find('.date'));
                 $(parent).parent().find('.date').html(response.new_date);
                 parent.removeAttribute('value');
             },
@@ -107,7 +106,7 @@
             }
         });
     });
-    $(document).on('click', 'th.attendance', function (event) {
+    $(document).on('click', 'th.attendance.editable', function (event) {
         event.preventDefault();
         let student_id = 0;
         let lesson_id = 0;

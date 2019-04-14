@@ -167,8 +167,8 @@ class Student(models.Model):
     def promotion_rates(self):
         self.year_of_studying = self.year_of_studying + 1
 
-    def has_perm(self, task):
-        return self.group.study_classes.filter(task=task).exists()
+    def has_perm(self, obj):
+        return self.group.study_classes.filter(id=obj.id).exists()
 
 
 class Teacher(models.Model):
@@ -214,5 +214,5 @@ class Teacher(models.Model):
         degree = self.academic_degree if self.academic_degree else self.academic_position
         return '{dgr}: {fn}'.format(dgr=degree, fn=self.user)
 
-    def has_perm(self, task):
-        return self.study_classes.filter(task=task).exists()
+    def has_perm(self, obj):
+        return self.study_classes.filter(id=obj.id).exists()

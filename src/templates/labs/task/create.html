@@ -1,8 +1,0 @@
-{% extends 'base.html' %}
-{% block main_content %}
-    <form {% if has_file_field %}enctype="multipart/form-data" {% endif %} method="post">{% csrf_token %}
-        {{ form.as_p }}
-        <input type="hidden" name="{{ redirect_field_name }}" value="{% url 'labs:task:create' %}">
-        <input type="submit" value="create">
-    </form>
-{% endblock %}
