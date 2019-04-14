@@ -7,7 +7,7 @@ from django.views.generic import TemplateView
 from django.views.generic.base import ContextMixin
 
 from sat.exceptions import BadRequest, PermissionDenied
-from labs.models import Discipline
+from labs.models import Discipline, StudyClass
 from labs.forms import TaskForm, MarkSetForm, AttendanceSetForm
 
 
@@ -27,23 +27,21 @@ class UserContextMixin(LoginRequiredMixin, ContextMixin):
             if user.is_teacher:
                 menu.update({_("Teacher sector"): {
                     str(discipline): [
-                        (str(study_class.group), urlencode(
-                            {'action': 'get_study_class', 'user': 'teacher', 'pk': study_class.pk}
-                        )) for study_class in user.teacher.study_classes.filter(discipline__exact=discipline)
+                        (str(study_class.group), urlencode({'action': 'get_study_class', 'pk': study_class.pk}))
+                        for study_class in user.teacher.study_classes.filter(discipline__exact=discipline)
                     ] for discipline in Discipline.objects.filter(study_class__teacher__exact=user.teacher).distinct()
                 }})
             if user.is_student:
                 menu.update({_("Student sector"): {
                     str(user.student.group): [
-                        (str(study_class.discipline), urlencode(
-                            {'action': 'get_study_class', 'user': 'student', 'pk': study_class.pk}
-                        )) for study_class in user.student.group.study_classes.all()
+                        (str(study_class.discipline), urlencode({'action': 'get_study_class', 'pk': study_class.pk}))
+                        for study_class in user.student.group.study_classes.all()
                     ]
                 }})
         return super().get_context_data(**kwargs, **{'menu': menu})
 
 
-class AjaxableDashboardResponseMixin:
+class AjaxableResponseMixin:
     def dispatch(self, request, *args, **kwargs):
         if request.is_ajax():
             method = getattr(request, request.method, {})
@@ -62,27 +60,21 @@ class AjaxableDashboardResponseMixin:
                 )
         return super().dispatch(request, *args, **kwargs)
 
+
+class DashboardView(UserContextMixin, AjaxableResponseMixin, TemplateView):
+    template_name = 'labs/dashboard.html'
+
     def get_study_class(self, request, *args, **kwargs):
         if request.method != 'GET':
             raise BadRequest(
                 {'reason': _("%s action must be requested through %s method.") % ('get_study_class', 'GET')}
             )
-        if 'user' not in request.GET or 'pk' not in request.GET:
+        if 'pk' not in request.GET:
             raise BadRequest({'reason': _("Required parameters missed.")})
-        user_type = request.GET['user']
         pk = request.GET['pk']
-        if user_type == 'teacher':
-            if not request.user.is_teacher:
-                raise PermissionDenied({'reason': _("You are not a teacher!")})
-            sc = request.user.teacher.study_classes.get(pk=pk)
-        elif user_type == 'student':
-            if not request.user.is_student:
-                raise PermissionDenied({'reason': _("You are not a student!")})
-            sc = request.user.student.group.study_classes.get(pk=pk)
-        else:
-            raise BadRequest({'reason': _("Unrecognized user type: '%s'.") % user_type})
+        sc = StudyClass.objects.get(pk=pk)
         lessons_list = sc.lessons.all()
-        return self.response_class(request, 'workspace.html', context={
+        return self.response_class(request, 'labs/dashboard/workspace.html', context={
             'sc': sc,
             'lessons_list': lessons_list,
             'students_list': [
@@ -94,9 +86,9 @@ class AjaxableDashboardResponseMixin:
                 }) for student in sc.group.students.all()
             ],
             'task_list': sc.tasks.all(),
-            'can_create': request.user.has_perm('labs.add_task'),
-            'can_change': request.user.has_perm('labs.change_task'),
-            'can_delete': request.user.has_perm('labs.delete_task'),
+            'can_create': request.user.has_perms(['labs.add_task'], obj=sc, as_user='teacher'),
+            'can_change': request.user.has_perms(['labs.change_task'], obj=sc, as_user='teacher'),
+            'can_delete': request.user.has_perms(['labs.delete_task'], obj=sc, as_user='teacher'),
         })
 
     def post_mark(self, request, *args, **kwargs):
@@ -105,14 +97,17 @@ class AjaxableDashboardResponseMixin:
         if not request.user.is_teacher:
             raise PermissionDenied({'reason': _("Only teachers can set marks!")})
         form = MarkSetForm(data=request.POST)
-        if form.is_valid():
+        if form.is_valid() and request.user.has_perms(['labs.change_attendance'], obj=form.instance.task.study_class,
+                                                      as_user='teacher'):
             form.save()
             return JsonResponse({
                 'new_mark': str(form.instance),
                 'new_date': date_format(form.instance.lesson.date)
             })
         else:
-            raise BadRequest(form.errors)
+            raise BadRequest({'reason': form.errors}) if form.errors else PermissionDenied({'reason': _(
+                "You have no permissions to edit this study class."
+            )})
 
     def post_task(self, request, *args, **kwargs):
         if request.method != 'POST':
@@ -120,13 +115,16 @@ class AjaxableDashboardResponseMixin:
         if not request.user.is_teacher:
             raise PermissionDenied({'reason': _("Only teachers can create tasks!")})
         form = TaskForm(data=request.POST)
-        if form.is_valid():
+        if form.is_valid() and request.user.has_perms(['labs.add_task'], obj=form.instance.study_class,
+                                                      as_user='teacher'):
             form.save()
             return JsonResponse({
                 'success': '',
             })
         else:
-            raise BadRequest(form.errors)
+            raise BadRequest({'reason': form.errors}) if form.errors else PermissionDenied({'reason': _(
+                "You have no permissions to edit this study class."
+            )})
 
     def post_attendance(self, request, *args, **kwargs):
         if request.method != 'POST':
@@ -136,12 +134,11 @@ class AjaxableDashboardResponseMixin:
         if not request.user.is_teacher:
             raise PermissionDenied({'reason': _("Only teachers can control attendance!")})
         form = AttendanceSetForm(data=request.POST)
-        if form.is_valid():
+        if form.is_valid() and request.user.has_perms(['labs.change_attendance'], obj=form.instance.lesson.study_class,
+                                                      as_user='teacher'):
             form.save()
             return HttpResponse('+' if form.instance.attendance else '-')
         else:
-            raise BadRequest(form.errors)
-
-
-class DashboardView(UserContextMixin, AjaxableDashboardResponseMixin, TemplateView):
-    template_name = 'labs/dashboard/dashboard.html'
+            raise BadRequest({'reason': form.errors}) if form.errors else PermissionDenied({'reason': _(
+                "You have no permissions to edit this study class."
+            )})

@@ -17,7 +17,7 @@
                 <td>{{ student.user|stringformat:"s" }}</td>
                 {% for lesson in lessons_list %}
                     {% with attandences|get_item:lesson.id as attandence %}
-                    <th class="date_header attendance student-{{ student.user.pk }} lesson-{{ lesson.pk }}" scope="col">{% if not attandence %}{% elif attandence.attendance %}+{% else %}-{% endif %}</th>
+                    <th class="date_header attendance{% if can_change %} editable{% endif %} student-{{ student.user.pk }} lesson-{{ lesson.pk }}" scope="col">{% if not attandence %}{% elif attandence.attendance %}+{% else %}-{% endif %}</th>
                     {% endwith %}
                 {% endfor %}
             </tr>
