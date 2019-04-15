@@ -7,12 +7,20 @@ GROUP_PERMISSIONS = {
     # TODO: написать права для групп
     STUDENTS_GROUP: (
         {'app': 'labs', 'model': 'Task', 'codename': 'view_task', 'name': 'Can view task'},
+        {'app': 'labs', 'model': 'Mark', 'codename': 'view_mark', 'name': 'Can view mark'},
+        {'app': 'labs', 'model': 'Attendance', 'codename': 'view_attendance', 'name': 'Can view attendance'},
     ),
     TEACHERS_GROUP: (
         {'app': 'labs', 'model': 'Task', 'codename': 'add_task', 'name': 'Can add task'},
         {'app': 'labs', 'model': 'Task', 'codename': 'change_task', 'name': 'Can change task'},
         {'app': 'labs', 'model': 'Task', 'codename': 'delete_task', 'name': 'Can delete task'},
         {'app': 'labs', 'model': 'Task', 'codename': 'view_task', 'name': 'Can view task'},
+        {'app': 'labs', 'model': 'Mark', 'codename': 'add_mark', 'name': 'Can add mark'},
+        {'app': 'labs', 'model': 'Mark', 'codename': 'change_mark', 'name': 'Can change mark'},
+        {'app': 'labs', 'model': 'Mark', 'codename': 'view_mark', 'name': 'Can view mark'},
+        {'app': 'labs', 'model': 'Attendance', 'codename': 'add_attendance', 'name': 'Can add attendance'},
+        {'app': 'labs', 'model': 'Attendance', 'codename': 'change_attendance', 'name': 'Can change attendance'},
+        {'app': 'labs', 'model': 'Attendance', 'codename': 'view_attendance', 'name': 'Can view attendance'},
     )
 }
 
