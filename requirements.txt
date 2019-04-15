@@ -1,4 +1,4 @@
 Django==2.2
-psycopg2==2.8.1
-psycopg2-binary==2.8.1
+psycopg2==2.8.2
+psycopg2-binary==2.8.2
 pytz==2019.1
