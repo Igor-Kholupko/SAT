@@ -1,0 +1,161 @@
+.recent_chats {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    float: left;
+    width: 25%;
+    height: 100%;
+    border: none;
+}
+
+.recent_chats_header {
+    height: 5%;
+    width: 100%;
+    padding: 5px;
+}
+
+.recent_chats_header_search {
+    width: 100%;
+    height: 100%;
+    padding: 3px;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.5em;
+}
+
+.search {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: none;
+}
+
+.search:focus {
+    outline: none;
+}
+
+.recent_chats_list {
+    width: 100%;
+    height: 95%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.recent_chat {
+    width: 100%;
+    height: 60px;
+}
+
+.recent_chat_user_img {
+    height: 100%;
+    width: 60px;
+    padding: 5px;
+    float: left;
+}
+
+.recent_chat_container {
+    height: 100%;
+    padding-left: 60px;
+    width: 100%;
+}
+
+.recent_chat_container_header {
+    width: 100%;
+    height: 40%;
+}
+
+.recent_chat_container_header_name {
+    height: 100%;
+    width: 65%;
+    margin: 0;
+    float: left;
+    border: none;
+    background-color: #00BFFF;
+}
+
+.recent_chat_container_header_isread_img {
+    height: 100%;
+    width: 10%;
+    display: inline-block;
+    margin:0 auto;
+    border: none;
+    background-color: antiquewhite;
+}
+
+.recent_chat_container_header_time {
+    height: 100%;
+    width: 25%;
+    float: right;
+    margin-bottom: 0;
+    text-align: center;
+    border: none;
+    background-color: aquamarine;
+}
+
+.recent_chat_container_message {
+    width: 100%;
+    height: 60%;
+}
+
+.current_chat {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 75%;
+    height: 100%;
+    margin-left: 25%;
+    border: none;
+}
+
+.current_chat_container {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.5em;
+}
+
+.current_chat_history {
+    width: 100%;
+    height: 95%;
+}
+
+
+.current_chat_type_message {
+    width: 100%;
+    height: 5%;
+    padding: 3px;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.5em;
+}
+
+.current_chat_type_message_input_text {
+    width: 95%;
+    height: 100%;
+    float: left;
+    padding-left: 5px;
+    padding-right: 5px;
+    border: none;
+}
+
+.current_chat_type_message_input_text:focus {
+    outline: none;
+}
+
+.current_chat_type_message_input_button_container {
+    height: 100%;
+    width: 5%;
+    float: right;
+    border: none;
+    background-color: white;
+}
+
+.current_chat_type_message_input_button {
+    border: none;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.send_image {
+    height: 30px;
+    width: 30px;
+}

@@ -1,0 +1,52 @@
+{% extends 'site_base.html' %}
+{% load static i18n %}
+{% block extrahead %}
+    <link rel="stylesheet" href="{% static 'css/chats_list.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="recent_chats">
+        <div class="recent_chats_header">
+            <div class="recent_chats_header_search">
+                <input class="search" type="text" placeholder="Поиск...">
+            </div>
+        </div>
+        <div class="recent_chats_list">
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-action" style="padding: 0px;">
+                    <div class="recent_chat">
+                        <div class="recent_chat_user_img">
+                            <img src="{% static 'images/icon.svg' %}" style="width: 50px; height: 50px;">
+                        </div>
+                        <div class="recent_chat_container">
+                            <div class="recent_chat_container_header">
+                                <p class="recent_chat_container_header_name">Игорь Холупко</p>
+                                <div class="recent_chat_container_header_isread_img">
+
+                                </div>
+                                <p class="recent_chat_container_header_time">18.04.19</p>
+                            </div>
+                            <div class="recent_chat_container_message">
+                                <p style="margin-bottom: 0; height: 100%; vertical-align: bottom;">Привет, Павел.</p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="current_chat">
+        <div class="current_chat_container">
+            <div class="current_chat_history">
+
+            </div>
+            <div class="current_chat_type_message">
+                <input class="current_chat_type_message_input_text" type="text" placeholder="Введите сообщение...">
+                <div class="current_chat_type_message_input_button_container">
+                    <button type="submit" class="current_chat_type_message_input_button">
+                    <img src="{% static 'images/send.png' %}" class="send_image">
+                </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
