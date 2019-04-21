@@ -1,0 +1,77 @@
+
+{% load static i18n chat_helpers %}
+{% block extrahead %}
+    <link rel="stylesheet" href="{% static 'css/chat_list.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="recent_chats">
+        <div class="recent_chats_header">
+            <div class="recent_chats_header_search">
+                <input class="search" type="text" placeholder="Поиск...">
+            </div>
+        </div>
+        <div class="recent_chats_list">
+            <ul class="list-group">
+                {% for chat in chat_list %}
+                    <li class="list-group-item list-group-item-action" id="{{ chat.uuid }}" style="padding: 0px;">
+                        <div class="recent_chat">
+                            <div class="recent_chat_user_img">
+                                <img src="{% static 'images/icon.svg' %}" style="width: 50px; height: 50px;">
+                            </div>
+                            <div class="recent_chat_container">
+                                <div class="container" style="padding: 5px 5px 5px 0px">
+                                    <div class="row" style="margin: 0">
+                                        <div class="col-sm-8" style="padding: 0;">
+                                            <p class="chat_name" style="margin-bottom: 0;">{{ chat|chat_with:user }}</p>
+                                        </div>
+                                        <div class="col-md-auto text-center align-middle" style="padding: 0">
+                                            <img src="{% static 'images/readb.png' %}" style="width: 20px; height: 20px; vertical-align: middle;">
+                                        </div>
+                                        <div class="col-sm text-center" style="padding: 0;">
+                                            <p class="chat_time" style="margin-bottom: 0;">{{ chat.last_action|time }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin: 0">
+                                        <div class="col-sm" style="padding: 0;">
+                                            <p style="margin-bottom: 0;">{{ chat.messages.last.message }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="current_chat">
+
+    </div>
+{% endblock %}
+
+{% block trailing_js %}
+<script type="text/javascript">
+    let chatSocket;
+    $(document).on('click', 'li.list-group-item', function (event) {
+        console.log(this.id);
+        console.log(window.location.href);
+        if (chatSocket)
+            chatSocket.close();
+        $.ajax({
+            type: "GET",
+            url: window.location.href,
+            data: {
+                'action': "get_chat",
+                'uuid': this.id
+            },
+            success: function (response) {
+                $("div.current_chat").html(response);
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+    });
+</script>
+{% endblock %}
