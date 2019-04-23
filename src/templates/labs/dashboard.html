@@ -18,6 +18,7 @@
         {% endfor %}
     {% endfor %}
 {% endblock %}
+
 {% block trailing_js %}
 <script type="text/javascript">
     $(document).on('click', '.list-group-item', function() {
@@ -145,6 +146,23 @@
         });
     });
     {% endif %}
+    $(document).on('click', '.contact-button', function (event) {
+        event.preventDefault();
+        $.ajax({
+            type: 'GET',
+            url: '/dashboard/',
+            data: {
+                'action': "get_chat",
+                'receiver': this.id,
+            },
+            success: function (response) {
+                $("div.main_content").html(response);
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+    });
     $(document).on('click', '#messages', function (event) {
         event.preventDefault();
         $.ajax({
