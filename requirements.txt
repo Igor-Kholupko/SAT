@@ -1,4 +1,37 @@
+############################################
+# General requirements for SAT application #
+############################################
+
+# Related to Django
+#  Either are listed as dependencies or just a django module
 Django==2.2
-psycopg2==2.8.2
-psycopg2-binary==2.8.2
-pytz==2019.1
+channels==2.2.0                 # Brings async, event-driven capabilities to Django.
+                                # Used to work with WebSockets (chat).
+
+# Dependencies of channels package
+aioredis==1.2.0                 # Asynchronous I/O support for Redis.
+asgiref==3.1.2                  # ASGI (Asynchronous Server Gateway Interface) application support.
+async-timeout==3.0.1            # Timeout context manager for asyncio programs.
+attrs==19.1.0                   # Simplify working with classes
+autobahn==19.3.3                # WebSocket client & server library, WAMP real-time framework (Twisted and asyncio).
+Automat==0.7.0                  # Self-service finite-state machines interface.
+channels-redis==2.4.0           # Django Channels channel layer that uses Redis as its backing store.
+constantly==15.1.0              # A library that provides symbolic constant support (Originally from Twisted).
+daphne==2.3.0                   # HTTP, HTTP2 and WebSocket protocol server for ASGI and ASGI-HTTP (like WSGI gunicorn).
+hiredis==1.0.0                  # Minimalistic C client library for the Redis database.
+hyperlink==19.0.0               # Pure-Python implementation of the URL, with an emphasis on correctness.
+idna==2.8                       # Support for the Internationalised Domain Names in Applications (IDNA) protocol.
+incremental==17.5.0             # Python project versions.
+msgpack==0.6.1                  # Efficient binary serialization format.
+PyHamcrest==1.9.0               # Framework for matcher objects.
+six==1.12.0                     # Python 2 and 3 compatibility utilities.
+sqlparse==0.3.0                 # Non-validating SQL parser.
+Twisted==19.2.0                 # An asynchronous networking framework.
+txaio==18.8.1                   # Compatibility API between asyncio/Twisted/Trollius.
+zope.interface==4.6.0           # Implementation of "object interfaces".
+
+
+# Independent packages
+psycopg2==2.8.2                 # Python-PostgreSQL Database Adapter (build requires).
+psycopg2-binary==2.8.2          # Python-PostgreSQL Database Adapter (not requiring a compiler or external libraries).
+pytz==2019.1                    # World timezone definitions.

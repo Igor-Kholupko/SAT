@@ -1,0 +1,140 @@
+{% load staticfiles i18n %}
+{% block extrahead %}
+    <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+{% endblock %}
+<div class="chat">
+    <div class="chat_container">
+        <div class="chat_user">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm" style="padding: 0px 5px;">
+                        <img src="{% static 'images/icon.svg' %}" style="width: 30px; height: 30px; float: right">
+                    </div>
+                    <div class="col-sm" style="padding: 0;">
+                        <p style="float: left">{{ request.receiver.username }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="chat_history">
+            <div class="chat_history_container" id="chat_scroll">
+                <div class="container">
+                    {% for message in chat_messages %}
+                        <div class="row">
+                        {% if message.sender.member_id == user.id %}
+                            <div class="col-sm">
+
+                            </div>
+                            <div class="col-sm" style="padding: 0; margin-right: 10px">
+                                <div class="outgoing">
+                                    <p class="outgoing_text">{{ message.message }}</p>
+                                    <div class="outgoing_isread_img">
+                                        <img src="{% static 'images/readb.png' %}" style="width: 30px; height: 30px">
+                                    </div>
+                                    <p class="outgoing_time">{{ message.timestamp|time }}</p>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="col-sm" style="padding: 0">
+                                <div class="incoming">
+                                    <p class="incoming_text">{{ message.message }}</p>
+                                    <div class="incoming_time">
+                                        <p class="incoming_time_text">{{ message.timestamp|time }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm">
+
+                            </div>
+                        {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="type_message">
+            <input class="type_message_input_text" type="text" placeholder="Введите сообщение...">
+            <div class="type_message_input_button_container">
+                <button type="submit" class="type_message_input_button">
+                <img src="{% static 'images/sendb.png' %}" class="send_image">
+            </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+    function createElementFromHTML(htmlString) {
+        let div = document.createElement('div');
+        div.innerHTML = htmlString.trim();
+        return div.firstChild;
+    }
+    chatSocket = new WebSocket(
+        'ws://' + window.location.host +
+        '/ws/chat/' + '{{ request.chat.uuid }}' + '/'
+    );
+    chatSocket.onmessage = function(e) {
+        console.log("receive", e);
+        let div;
+        let data = JSON.parse(e.data);
+        let messageType = data['type'];
+        let message = data['message'];
+        if (messageType === 'chat_message') {
+            let inbound = data['inbound'];
+            let outbound = data['outbound'];
+            let timestamp = data['timestamp'];
+            if (inbound) {
+                div =
+                    '<div class="row">' +
+                    '    <div class="col-sm" style="padding: 0">'+
+                    '        <div class="incoming">'+
+                    '            <p class="incoming_text">'+ message +'</p>'+
+                    '            <div class="incoming_time">'+
+                    '                <p class="incoming_time_text">'+ timestamp +'</p>'+
+                    '            </div>'+
+                    '        </div>'+
+                    '        <div class="col-sm">'+
+                    '        </div>'+
+                    '    </div>'+
+                    '</div>'
+            } else if (outbound) {
+                div =
+                    '<div class="row">' +
+                    '    <div class="col-sm">'+
+                    '    </div>'+
+                    '    <div class="col-sm" style="padding: 0; margin-right: 10px">'+
+                    '        <div class="outgoing">'+
+                    '            <p class="outgoing_text">'+ message +'</p>'+
+                    '            <div class="outgoing_isread_img">'+
+                    '                <img src="{% static 'images/readb.png' %}" style="width: 30px; height: 30px">'+
+                    '            </div>'+
+                    '            <p class="outgoing_time">'+ timestamp + '</p>'+
+                    '        </div>'+
+                    '    </div>'+
+                    '</div>'
+            }
+        }
+        div = createElementFromHTML(div);
+        let chat_log = document.querySelector('.chat_history_container .container');
+        let need_scroll = chat_log.scrollTop + chat_log.offsetHeight >= chat_log.scrollHeight;
+        chat_log.appendChild(div);
+        if (need_scroll) {
+            $(chat_log).animate({scrollTop: chat_log.scrollHeight}, 350);
+        }
+    };
+        document.querySelector('.type_message_input_text').onkeyup = function(e) {
+        if (e.keyCode === 13) {  // enter, return
+            document.querySelector('.type_message_input_button').click();
+        }
+    };
+
+    document.querySelector('.type_message_input_button').onclick = function(e) {
+        let messageInputDom = document.querySelector('.type_message_input_text');
+        let message = messageInputDom.value;
+        chatSocket.send(JSON.stringify({
+            'message': message
+        }));
+        console.log("send");
+        messageInputDom.value = '';
+    };
+</script>
