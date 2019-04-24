@@ -8,22 +8,20 @@
 {% endblock %}
 {% block left_menu %}
     {% for group_name, group_menu in menu.items %}
-        {% if not forloop.first or not forloop.last %}
-            <p class="left_menu_menu">{{ group_name }}</p>
-        {% endif %}
         {% for menu_value, submenu in group_menu.items %}
-            <p class="left_menu_menu">{{ menu_value }}</p>
-            <ul class="left_menu_submenu_list">
+            <p class="left_menu_menu ">{{ menu_value }}</p>
+            <ul class="list-group">
             {% for  submenu_value in submenu %}
-                <li class="left_menu_submenu" value="{{ submenu_value.1 }}">{{ submenu_value.0 }}</li>
+                <li class="list-group-item text-center" style="color: #6E6E6E;" value="{{ submenu_value.1 }}">{{ submenu_value.0 }}</li>
             {% endfor %}
             </ul>
         {% endfor %}
     {% endfor %}
 {% endblock %}
+
 {% block trailing_js %}
 <script type="text/javascript">
-    $(document).on('click', '.left_menu_submenu', function() {
+    $(document).on('click', '.list-group-item', function() {
         $.ajax({
             type: "GET",
             url: "/dashboard/",
@@ -38,7 +36,7 @@
         });
     });
     {% if user.is_teacher %}
-    $(document).on('click', 'td.mark', function (event) {
+    $(document).on('click', 'td.mark.editable', function (event) {
         event.preventDefault();
         let student_id = 0;
         let task_id = 0;
@@ -76,7 +74,6 @@
             success: function (response) {
                 parent.classList.replace('mark-edit', 'mark');
                 $(parent).html(response.new_mark);
-                console.log($(parent).parent().find('.date'));
                 $(parent).parent().find('.date').html(response.new_date);
                 parent.removeAttribute('value');
             },
@@ -107,7 +104,7 @@
             }
         });
     });
-    $(document).on('click', 'th.attendance', function (event) {
+    $(document).on('click', 'th.attendance.editable', function (event) {
         event.preventDefault();
         let student_id = 0;
         let lesson_id = 0;
@@ -149,6 +146,39 @@
         });
     });
     {% endif %}
+    $(document).on('click', '.contact-button', function (event) {
+        event.preventDefault();
+        $.ajax({
+            type: 'GET',
+            url: '/dashboard/',
+            data: {
+                'action': "get_chat",
+                'receiver': this.id,
+            },
+            success: function (response) {
+                $("div.main_content").html(response);
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+    });
+    $(document).on('click', '#messages', function (event) {
+        event.preventDefault();
+        $.ajax({
+            type: 'GET',
+            url: '/dashboard/',
+            data: {
+                'action': "get_chat_list"
+            },
+            success: function (response) {
+                $("div.main_content").html(response);
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+    });
     $(document).on('click', '.user-info', function (event) {
         event.preventDefault();
         $.ajax({

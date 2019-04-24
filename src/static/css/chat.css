@@ -1,0 +1,157 @@
+.chat {
+    width: 100%;
+    height: 100%;
+}
+
+.chat_container {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.5em;
+    background-color: white;
+}
+
+.chat_history {
+    width: 100%;
+    height: 90%;
+}
+
+.chat_history_container {
+    width: 100%;
+    height: 98%;
+    overflow-y:scroll;
+}
+
+.chat_user {
+    width: 100%;
+    height: 5%;
+    padding-left: 40%;
+    padding-right: 40%;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: center;
+}
+
+.incoming {
+    width: 350px;
+    min-height: 40px;
+    margin-top: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.5em;
+}
+
+.incoming_text {
+    width: 260px;
+    min-height: 40px;
+    line-height: 40px;
+    margin-left: 8px;
+    float: left;
+    margin-bottom: 0;
+}
+
+.incoming_time {
+    width: 80px;
+    text-align: center;
+    height: 40px;
+    float: right;
+}
+
+.incoming_time_text {
+    margin-bottom: 0;
+    line-height: 40px;
+}
+
+.outgoing {
+    margin-top: 10px;
+    min-height: 40px;
+    width: 400px;
+    float: right;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.5em;
+}
+
+.outgoing_text {
+    min-height: 40px;
+    margin-left: 10px;
+    margin-bottom: 0;
+    float: left;
+    width: 270px;
+    line-height: 40px;
+}
+
+.outgoing_isread_img {
+    width: 30px;
+    height: 30px;
+    margin-top: 5px;
+    display: inline-block;
+}
+
+.outgoing_time {
+    margin-bottom: 0;
+    float: right;
+    width: 80px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+}
+
+.type_message {
+    width: 100%;
+    height: 5%;
+    padding: 3px;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.5em;
+}
+
+.type_message_input_text {
+    width: 95%;
+    height: 100%;
+    float: left;
+    padding-left: 5px;
+    padding-right: 5px;
+    border: none;
+}
+
+.type_message_input_text:focus {
+    outline: none;
+}
+
+.type_message_input_button_container {
+    height: 100%;
+    width: 5%;
+    float: right;
+    border: none;
+    background-color: white;
+}
+
+.type_message_input_button {
+    border: none;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.send_image {
+    height: 30px;
+    width: 30px;
+}
+
+#chat_scroll::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+#chat_scroll::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #F5F5F5;
+}
+
+#chat_scroll::-webkit-scrollbar-thumb
+{
+	background-color: #00BFFF;
+}
+
+
+

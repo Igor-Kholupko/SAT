@@ -17,12 +17,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from chat import views
 
 import labs.urls
 import custom_auth.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    #path('chat/', views.ChatList.as_view()),
     path('', include(labs.urls)),
     path('', include(custom_auth.urls)),
 ]

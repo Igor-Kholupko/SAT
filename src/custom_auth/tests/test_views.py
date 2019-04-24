@@ -64,7 +64,7 @@ class AnotherPersonPageTest(TestCase):
     def test_incorrect_student_page_request_by_authorized_user(self):
         if self.login:
             response = self.authorized_client.get('/personal-page/6505003/')
-            self.assertEqual(response.status_code, 302)
+            self.assertEqual(response.status_code, 400)
 
     def test_correct_student_page_request_by_anonymous_user(self):
         response = self.anonymous_client.get('/personal-page/6505004/')
@@ -89,7 +89,7 @@ class AnotherPersonPageTest(TestCase):
     def test_incorrect_teacher_page_request_by_authorized_user(self):
         if self.login:
             response = self.authorized_client.get('/personal-page/petrov-i-i/')
-            self.assertEqual(response.status_code, 302)
+            self.assertEqual(response.status_code, 400)
 
     def test_correct_teacher_page_request_by_anonymous_user(self):
         response = self.anonymous_client.get('/personal-page/ivanov-i-i/')

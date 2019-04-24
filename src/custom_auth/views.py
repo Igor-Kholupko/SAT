@@ -5,9 +5,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.decorators.cache import never_cache
-from django.views.decorators.csrf import csrf_protect
-from django.views.decorators.debug import sensitive_post_parameters
+from django.utils.http import is_safe_url
 from django.shortcuts import redirect, render, HttpResponseRedirect
 from django.views.generic import View, DetailView
 
@@ -42,7 +40,7 @@ class AjaxableLoginResponseMixin:
         response = super().form_valid(form)
         if self.request.is_ajax():
             data = {
-                'redirect': self.get_success_url(),
+                'redirect': response.url,
             }
             return JsonResponse(data)
         else:
@@ -50,12 +48,27 @@ class AjaxableLoginResponseMixin:
 
 
 class LoginView(AjaxableLoginResponseMixin, _LoginView):
-    @method_decorator(user_passes_test(lambda u: not u.is_authenticated, login_url=reverse_lazy('labs:dashboard')))
-    @method_decorator(sensitive_post_parameters())
-    @method_decorator(csrf_protect)
-    @method_decorator(never_cache)
+    @method_decorator(user_passes_test(lambda u: not u.is_authenticated, login_url=reverse_lazy('labs:dashboard'),
+                                       redirect_field_name=None))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+        """Return the user-originating redirect URL if it's safe."""
+        redirect_to = self.request.session.get(
+            self.redirect_field_name,
+            self.request.POST.get(
+                self.redirect_field_name,
+                self.request.GET.get(self.redirect_field_name, '')
+            )
+        )
+        self.request.session.pop(self.redirect_field_name, ())
+        url_is_safe = is_safe_url(
+            url=redirect_to,
+            allowed_hosts=self.get_success_url_allowed_hosts(),
+            require_https=self.request.is_secure(),
+        )
+        return redirect_to if url_is_safe else ''
 
 
 def redirect_from_start_page(request):
@@ -79,12 +92,15 @@ class UserPersonalInfoView(View):
 
     def get(self, request, *args, **kwargs):
         uid = request.GET.get('uid')
+        username = kwargs.get('user_identifier')
+        if uid is None:
+            username = username if username and username.isdigit() else _teacher_url_parser(username)
 
-        qs = self.model.objects.filter(id=uid)
+        qs = self.model.objects.filter(id=uid) if uid else self.model.objects.filter(username=username)
         if qs.exists():
             return render(request, self.template_name, {self.context_object_name: qs.first()})
         else:
-            return JsonResponse("Bad Request", status=400)
+            return JsonResponse({"error": "Bad Request"}, status=400)
 
 
 UserPersonalInfoView.view = UserPersonalInfoView.as_view()

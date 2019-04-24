@@ -11,7 +11,7 @@ Web-приложение *“SAT”* (Students and Teachers) - система в
 3. Возможность оценивать выполнение задания студентами.</br>
 
 ### Используемые технологии:
-1. Python 3.7.2 (Django 2.1.5)</br>
+1. Python 3.7.2 (Django 2.2)</br>
 2. HTML5</br>
 3. CSS3</br>
 4. JavaScript (AJAX)</br>

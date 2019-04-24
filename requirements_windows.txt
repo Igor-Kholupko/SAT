@@ -1,0 +1,7 @@
+###############################
+# Requirements for Windows OS #
+###############################
+
+# channels Requirements for Win32
+pypiwin32==223                  # Provides access to much
+pywin32==224                    # of the Win32 API.

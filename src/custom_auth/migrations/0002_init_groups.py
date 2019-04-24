@@ -33,8 +33,9 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(
-            code=forwards_func,
-            reverse_code=reverse_func,
-        ),
+        # OPTIMIZED
+        # migrations.RunPython(
+        #     code=forwards_func,
+        #     reverse_code=reverse_func,
+        # ),
     ]
