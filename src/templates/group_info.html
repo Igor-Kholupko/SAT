@@ -14,7 +14,7 @@
         {% for student, attandences, marks in students_list %}
             <tr>
                 <th scope="row" >{{ forloop.counter }}</th>
-                <td>{{ student.user|stringformat:"s" }}</td>
+                <td class="user-info" id="{{ student.user_id }}">{{ student.user|stringformat:"s" }}</td>
                 {% for lesson in lessons_list %}
                     {% with attandences|get_item:lesson.id as attandence %}
                     <th class="date_header attendance student-{{ student.user.pk }} lesson-{{ lesson.pk }}" scope="col">{% if not attandence %}{% elif attandence.attendance %}+{% else %}-{% endif %}</th>

@@ -78,23 +78,16 @@ class UserPersonalInfoView(View):
         super().__init__(**kwargs)
 
     def get(self, request, *args, **kwargs):
-        user_identifier = kwargs.get('user_identifier')
+        uid = request.GET.get('uid')
 
-        if user_identifier:
-            if user_identifier.isdigit():
-                self.object = self.model.objects.filter(username=user_identifier).first()
-            else:
-                teacher_username = _teacher_url_parser(user_identifier)
-                if teacher_username:
-                    self.object = self.model.objects.filter(username=teacher_username).first()
-                else:
-                    return HttpResponseRedirect(reverse_lazy('labs:dashboard'))
+        qs = self.model.objects.filter(id=uid)
+        if qs.exists():
+            return render(request, self.template_name, {self.context_object_name: qs.first()})
+        else:
+            return JsonResponse("Bad Request", status=400)
 
-            if self.object:
-                context = {self.context_object_name: self.object}
-                return render(request, self.template_name, context)
 
-        return HttpResponseRedirect(reverse_lazy('labs:dashboard'))
+UserPersonalInfoView.view = UserPersonalInfoView.as_view()
 
 
 class PersonalInfoDetail(DetailView):

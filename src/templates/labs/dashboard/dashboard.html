@@ -149,5 +149,22 @@
         });
     });
     {% endif %}
+    $(document).on('click', '.user-info', function (event) {
+        event.preventDefault();
+        $.ajax({
+            type: 'GET',
+            url: '/dashboard/',
+            data: {
+                'action': "get_personal_info",
+                'uid': this.id,
+            },
+            success: function (response) {
+                $("div.main_content").html(response);
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
+    });
 </script>
 {% endblock %}

@@ -43,7 +43,7 @@
 
             <div class="right_menu">
                 {% block right_menu %}
-                    <p class="right_menu_form" id="profile"><a href="{% url 'personal_info_detail' user.id %}">Moй профиль</a></p>
+                <p class="right_menu_form user-info" id="{{ user.id }}">Moй профиль</p>
                 <p class="right_menu_form" id="news">Новости</p>
                 <p class="right_menu_form" id="messages">Сообщения</p>
                 <p class="right_menu_form" id="settings">Настройки</p>

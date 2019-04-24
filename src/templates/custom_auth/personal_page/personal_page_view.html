@@ -1,15 +1,28 @@
-{% extends 'site_base.html' %}
 {% load staticfiles i18n %}
-{% block content %}
-    <div>
-        <p>
-            {{ person.surname }}
-            {{ person.first_name }}
-            {{ person.patronymic }}
-        </p>
+    <link rel="stylesheet" href="{% static 'css/personal_page_view.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+              crossorigin="anonymous">
+    <div class="personal_page">
+    <div class="photo_container">
+        <img src="{% static 'images/icon.svg' %}" class="profile_img">
     </div>
-    <div>
-        {% if person.is_teacher %}
+    <div class="personal_info_container">
+        <div class="personal_info_content">
+            <p>
+                {{ person.surname }}
+                {{ person.first_name }}
+                {{ person.patronymic }}
+            </p>
+            {% if person.phone is not None %}
+            <p>{% trans "Телефон:" %} {{ person.phone }}</p>
+            {% endif %}
+            <p>{% trans "Электронная почта:" %} {{ person.email }}</p>
+        </div>
+    </div>
+    <div class="university_info_container">
+        <div class="university_info_content">
+            {% if person.is_teacher %}
             <p>{{ person.teacher.academic_position }}</p>
             <p>{{ person.teacher.administrative_position }}</p>
             <p>{{ person.teacher.academic_degree }}</p>
@@ -19,15 +32,14 @@
             <p>{% trans "Специальность:" %} {{ person.student.speciality }}</p>
             <p>{% trans "Курс:" %} {{ person.student.year_of_studying }}</p>
             <p>{% trans "Группа:" %} {{ person.student.group }}</p>
-        {% endif %}
+            {% endif %}
+            <div class="button_container">
+            {% if person.id == user.id %}
+                <button type="button" class="btn btn-light edit-button">{% trans "Редактировать" %}</button>
+            {% else %}
+                <button type="button" class="btn btn-light contact-button" id="{{ person.id }}">{% trans "Связ`аться" %}</button>
+            {% endif %}
+        </div>
+        </div>
     </div>
-    <div>
-        {% if person.phone is not None %}
-            <p>{% trans "Телефон:" %} {{ person.phone }}</p>
-        {% endif %}
-        <p>
-            {% trans "Электронная почта:" %} {{ person.email }}
-        </p>
-    </div>
-
-{% endblock %}
+</div>

@@ -9,6 +9,7 @@ from django.views.generic.base import ContextMixin
 from sat.exceptions import BadRequest, PermissionDenied
 from labs.models import Discipline
 from labs.forms import TaskForm, MarkSetForm, AttendanceSetForm
+from custom_auth.views import UserPersonalInfoView
 
 
 class UserContextMixin(LoginRequiredMixin, ContextMixin):
@@ -137,3 +138,6 @@ class AjaxableDashboardResponseMixin:
 
 class DashboardView(UserContextMixin, AjaxableDashboardResponseMixin, TemplateView):
     template_name = 'labs/dashboard/dashboard.html'
+
+    def get_personal_info(self, *args, **kwargs):
+        return UserPersonalInfoView.view(*args, **kwargs)
