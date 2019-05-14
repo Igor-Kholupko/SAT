@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse, HttpResponse
+from django.template.loader import get_template
 from django.utils.formats import date_format
 from django.utils.http import urlencode
 from django.utils.translation import ugettext_lazy as _
@@ -101,8 +102,36 @@ class DashboardView(UserContextMixin, AjaxableResponseMixin, TemplateView):
         if form.is_valid() and request.user.has_perms(['labs.add_task'], obj=form.instance.study_class,
                                                       as_user='teacher'):
             form.save()
+            task = form.instance
             return JsonResponse({
-                'success': '',
+                'nav-link': """
+                <a class="nav-item nav-link"
+                   data-toggle="tab"
+                   href="#nav-profile-{taskid}"
+                   role="tab"
+                   aria-controls="nav-profile"
+                   aria-selected="false"
+                >{taskname}</a>
+                """.format(taskid=task.id, taskname=str(task)),
+                'tab-pane': """
+                <div class="tab-pane fade"
+                     id="nav-profile-{taskid}"
+                     role="tabpanel"
+                     aria-labelledby="nav-profile-tab"
+                     style="height: 100%;
+                ">
+                """.format(taskid=task.id) + get_template('labs/dashboard/lab_info.html').render(context={
+                    'task': task,
+                    'students_list': [
+                        (student, {
+                            attendance.lesson_id: attendance
+                            for attendance in student.attendances.filter(lesson__study_class=task.study_class)
+                        }, {
+                             mark.task_id: mark for mark in student.marks.filter(lesson__study_class=task.study_class)
+                         }) for student in task.study_class.group.students.all()
+                    ],
+                    'can_change': True,
+                }) + """</div>""",
             })
         else:
             raise BadRequest({'reason': form.errors}) if form.errors else PermissionDenied({'reason': _(

@@ -92,12 +92,19 @@
     });
     $(document).on('submit', '#createTask', function (event) {
         event.preventDefault();
+        let form = this;
         $.ajax({
-            type: this.method,
+            type: form.method,
             url: '/dashboard/',
-            data: $(this).serialize(),
+            data: $(form).serialize(),
             success: function (response) {
-                console.log(response);
+                form.reset();
+                let nav_link = response['nav-link'];
+                let tab_content = response['tab-pane'];
+                $("a.nav-item.nav-link[href=\\#nav-issue]")[0].insertAdjacentHTML('beforebegin', nav_link);
+                $("div.tab-content")[0].insertAdjacentHTML('beforeend', tab_content);
+                let tabs = $("#nav-tab").children();
+                $(tabs[tabs.length-2]).click()
             },
             error: function (response) {
                 console.log(response);

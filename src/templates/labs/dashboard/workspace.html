@@ -2,7 +2,7 @@
     <div class="nav nav-tabs" id="nav-tab" role="tablist" style="border-bottom: none">
         <a class="nav-item nav-link active" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">{{ sc|stringformat:"s" }}</a>
         {% for task in task_list %}
-            <a class="nav-item nav-link" data-toggle="tab" href="#nav-profile-{{ forloop.counter }}" role="tab" aria-controls="nav-profile" aria-selected="false">{{ task|stringformat:"s" }}</a>
+            <a class="nav-item nav-link" data-toggle="tab" href="#nav-profile-{{ task.id }}" role="tab" aria-controls="nav-profile" aria-selected="false">{{ task|stringformat:"s" }}</a>
         {% endfor %}
         {% if can_create %}
             <a class="nav-item nav-link" data-toggle="tab" href="#nav-issue" role="tab" aria-controls="nav-contact" aria-selected="false">+</a>
@@ -12,7 +12,7 @@
 <div class="tab-content" id="nav-tabContent" style="height: 95%; padding-top: 10px">
     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style="height: 100%;">{% include 'labs/dashboard/group_info.html' %}</div>
     {% for task in task_list %}
-        <div class="tab-pane fade" id="nav-profile-{{ forloop.counter }}" role="tabpanel" aria-labelledby="nav-profile-tab" style="height: 100%;">{% include 'labs/dashboard/lab_info.html' %}</div>
+        <div class="tab-pane fade" id="nav-profile-{{ task.id }}" role="tabpanel" aria-labelledby="nav-profile-tab" style="height: 100%;">{% include 'labs/dashboard/lab_info.html' %}</div>
     {% endfor %}
     {% if can_create %}
         <div class="tab-pane fade" id="nav-issue" role="tabpanel" aria-labelledby="nav-contact-tab" style="height: 100%;">{% include 'labs/dashboard/issue.html' %}</div>
