@@ -4,21 +4,17 @@
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
               crossorigin="anonymous">
     <div class="personal_page">
-    <div class="photo_container">
-        <img src="{% static 'images/icon.svg' %}" class="profile_img">
-    </div>
     <div class="personal_info_container">
-        <div class="personal_info_content">
-            <p>
-                {{ person.surname }}
-                {{ person.first_name }}
-                {{ person.patronymic }}
-            </p>
-            {% if person.phone is not None %}
-            <p>{% trans "Телефон:" %} {{ person.phone }}</p>
-            {% endif %}
-            <p>{% trans "Электронная почта:" %} {{ person.email }}</p>
-        </div>
+        <img src="{% static 'images/icon.svg' %}" class="profile_img">
+        <p>
+            {{ person.surname }}
+            {{ person.first_name }}
+            {{ person.patronymic }}
+        </p>
+        {% if person.phone is not None %}
+        <p>{% trans "Телефон:" %} {{ person.phone }}</p>
+        {% endif %}
+        <p>{% trans "Электронная почта:" %} {{ person.email }}</p>
     </div>
     <div class="university_info_container">
         <div class="university_info_content">
@@ -37,9 +33,9 @@
             {% if person.id == user.id %}
                 <button type="button" class="btn btn-light edit-button">{% trans "Редактировать" %}</button>
             {% else %}
-                <button type="button" class="btn btn-light contact-button" id="{{ person.id }}">{% trans "Связ`аться" %}</button>
+                <button type="button" class="btn btn-light contact-button" id="{{ person.id }}">{% trans "Связаться" %}</button>
             {% endif %}
-        </div>
+            </div>
         </div>
     </div>
 </div>

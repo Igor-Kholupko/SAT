@@ -112,9 +112,6 @@ body {
     cursor: default;
 }
 
-.show {display: block;}
-
-
 ul.errorlist {
     margin-bottom: 0;
     padding-inline-start: 0;
@@ -127,3 +124,4 @@ ul.errorlist li {
     text-align: left;
     color: darkred;
 }
+

@@ -10,7 +10,7 @@
                 <input class="search" type="text" placeholder="Поиск...">
             </div>
         </div>
-        <div class="recent_chats_list">
+        <div class="recent_chats_list" id="recent_scroll">
             <ul class="list-group">
                 {% for chat in chat_list %}
                     <li class="list-group-item list-group-item-action" id="{{ chat.uuid }}" style="padding: 0px;">

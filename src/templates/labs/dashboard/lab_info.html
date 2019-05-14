@@ -37,6 +37,13 @@
         </div>
     </div>
 </div>
-<div class="ask_btn_area">
-    <button class="ask_btn" type="submit">Задать вопрос</button>
-</div>
+{% if not can_change %}
+    <style>
+        .lab_info {
+            height: 95%;
+        }
+    </style>
+    <div class="ask_btn_area">
+            <button class="ask_btn" type="submit">Задать вопрос</button>
+    </div>
+{% endif %}
