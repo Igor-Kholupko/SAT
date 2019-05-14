@@ -47,11 +47,13 @@
         if (!student_id || !task_id) return;
         this.setAttribute('value', $(this).html());
         this.classList.replace('mark', 'mark-edit');
+        let value = '';
+        if (!this.classList.contains('no-mark')) value = $(this).html();
         $(this).html(
             '<form id="setMark" method="post">' + '{% csrf_token %}' +
             '<input type="hidden" name="action" value="post_mark">' +
             '<input type="hidden" name="student" value="' + student_id + '"><input type="hidden" name="task" value="' + task_id + '">' +
-            '<input type="text" name="mark"><input type="submit" value="Save"><input type="reset" value="Cancel">' +
+            '<input type="text" name="mark" value="' + value + '"><input type="submit" value="Save"><input type="reset" value="Cancel">' +
             '</form>'
         );
     });
@@ -76,6 +78,7 @@
                 $(parent).html(response.new_mark);
                 $(parent).parent().find('.date').html(response.new_date);
                 parent.removeAttribute('value');
+                parent.classList.remove('no-mark');
             },
             error: function (response) {
                 console.log(response);
@@ -92,12 +95,19 @@
     });
     $(document).on('submit', '#createTask', function (event) {
         event.preventDefault();
+        let form = this;
         $.ajax({
-            type: this.method,
+            type: form.method,
             url: '/dashboard/',
-            data: $(this).serialize(),
+            data: $(form).serialize(),
             success: function (response) {
-                console.log(response);
+                form.reset();
+                let nav_link = response['nav-link'];
+                let tab_content = response['tab-pane'];
+                $("a.nav-item.nav-link[href=\\#nav-issue]")[0].insertAdjacentHTML('beforebegin', nav_link);
+                $("div.tab-content")[0].insertAdjacentHTML('beforeend', tab_content);
+                let tabs = $("#nav-tab").children();
+                $(tabs[tabs.length-2]).click()
             },
             error: function (response) {
                 console.log(response);
