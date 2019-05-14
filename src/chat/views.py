@@ -13,7 +13,7 @@ class Chat(LoginRequiredMixin, TemplateView):
         if uuid is None:
             receiver = request.GET.get('receiver', None)
             receiver = User.objects.get(id=receiver) if User.objects.filter(id=receiver).exists() and receiver else None
-            request.chat = ChatGroup.create_chat(request.user, receiver) if receiver else None
+            request.chat = ChatGroup.get_or_create_chat(request.user, receiver) if receiver else None
         else:
             chat_qs = ChatGroup.objects.filter(uuid=uuid)
             request.chat = chat_qs.first() if chat_qs.exists() else None

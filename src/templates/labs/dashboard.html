@@ -155,6 +155,67 @@
             }
         });
     });
+    $(document).on('click', 'td.var.editable', function (event) {
+        event.preventDefault();
+        let var_id = 0;
+        let no_var = this.classList.contains("no-var");
+        if (!no_var)
+            for (let i=0, l=this.classList.length; i<l; ++i) {
+                if(/id-.*/.test(this.classList[i])) var_id = this.classList[i].split('-')[1];
+            }
+        let variant_post = this.classList.contains("variant");
+        let note_post = this.classList.contains("note");
+        if ((variant_post && note_post) || (!variant_post && !note_post)) return;
+        let type_post = null;
+        if (variant_post) type_post = "variant";
+        else type_post = "note";
+        if (!var_id && !no_var) return;
+        this.setAttribute('value', $(this).html());
+        this.classList.replace('var', 'var-edit');
+        $(this).html(
+            '<form id="setVar" method="post">' + '{% csrf_token %}' +
+            '<input type="hidden" name="action" value="post_var">' +
+            '<input type="hidden" name="field" value="'+type_post+'">' +
+            '<input type="hidden" name="var" value="' + var_id + '">' +
+            '<input type="text" name="value" value="' + $(this).html() + '"><input type="submit" value="Save"><input type="reset" value="Cancel">' +
+            '</form>'
+        );
+    });
+    $(document).on('submit', '#setVar', function (event) {
+        event.preventDefault();
+        let parent = this.parentNode;
+        let this_form = this;
+        let form_data = {};
+        $.each($(this).serializeArray(), function () {
+            form_data[this.name] = this.value;
+        });
+        if (!form_data['value']) {
+            this.reset();
+            return;
+        }
+        $.ajax({
+            type: this.method,
+            url: '/dashboard/',
+            data: $(this).serialize(),
+            success: function (response) {
+                parent.classList.replace('var-edit', 'var');
+                $(parent).html(response.data);
+                parent.removeAttribute('value');
+                parent.classList.remove('no-var');
+            },
+            error: function (response) {
+                console.log(response);
+                this_form.reset();
+            }
+        });
+    });
+    $(document).on('reset', '#setVar', function (event) {
+        event.preventDefault();
+        let parent = this.parentNode;
+        parent.classList.replace('var-edit', 'var');
+        $(parent).html(parent.getAttribute('value'));
+        parent.removeAttribute('value');
+    });
     {% endif %}
     $(document).on('click', '.contact-button', function (event) {
         event.preventDefault();
