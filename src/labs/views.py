@@ -9,8 +9,8 @@ from django.views.generic.base import ContextMixin
 
 from sat.exceptions import BadRequest, PermissionDenied
 from sat.views import AjaxableResponseMixin
-from labs.models import Discipline, StudyClass
-from labs.forms import TaskForm, MarkSetForm, AttendanceSetForm
+from labs.models import Discipline, StudyClass, TaskVariant
+from labs.forms import TaskForm, MarkSetForm, AttendanceSetForm, TaskVariantFormSet
 from chat.views import ChatList
 from custom_auth.views import UserPersonalInfoView
 
@@ -42,7 +42,7 @@ class UserContextMixin(LoginRequiredMixin, ContextMixin):
                         for study_class in user.student.group.study_classes.all()
                     ]
                 }})
-        return super().get_context_data(**kwargs, **{'menu': menu})
+        return super().get_context_data(**kwargs, **{'menu': menu}, **{'formset': TaskVariantFormSet()})
 
 
 class DashboardView(UserContextMixin, AjaxableResponseMixin, TemplateView):
@@ -99,10 +99,13 @@ class DashboardView(UserContextMixin, AjaxableResponseMixin, TemplateView):
         if not request.user.is_teacher:
             raise PermissionDenied({'reason': _("Only teachers can create tasks!")})
         form = TaskForm(data=request.POST)
-        if form.is_valid() and request.user.has_perms(['labs.add_task'], obj=form.instance.study_class,
-                                                      as_user='teacher'):
-            form.save()
-            task = form.instance
+        formset = TaskVariantFormSet(request.POST)
+        if form.is_valid() and formset.is_valid() and request.user.has_perms(
+                ['labs.add_task'], obj=form.instance.study_class, as_user='teacher'
+        ):
+            task = form.save()
+            formset.instance = task
+            formset.save()
             return JsonResponse({
                 'nav-link': """
                 <a class="nav-item nav-link"
@@ -165,3 +168,15 @@ class DashboardView(UserContextMixin, AjaxableResponseMixin, TemplateView):
 
     def get_personal_info(self, *args, **kwargs):
         return UserPersonalInfoView.view(*args, **kwargs)
+
+    def post_var(self, request, *args, **kwargs):
+        var_id = int(request.POST['var'])
+        field = request.POST['field']
+        value = request.POST['value']
+        qs = TaskVariant.objects.filter(id=var_id)
+        if not qs.exists():
+            raise BadRequest({'reason': 'Cannot find var with such id.'})
+        if field not in {'variant', 'note'}:
+            raise BadRequest({'reason': 'Unknown field.'})
+        qs.update(**{field: value})
+        return JsonResponse({'data': value})

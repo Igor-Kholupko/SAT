@@ -1,9 +1,10 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.forms.models import inlineformset_factory
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 
-from labs.models import Task, Mark, Attendance
+from labs.models import Task, Mark, Attendance, TaskVariant
 
 
 class TaskForm(forms.ModelForm):
@@ -46,3 +47,14 @@ class AttendanceSetForm(forms.ModelForm):
     class Meta:
         model = Attendance
         fields = '__all__'
+
+
+class TaskVariantForm(forms.ModelForm):
+    class Meta:
+        model = TaskVariant
+        fields = '__all__'
+
+
+TaskVariantFormSet = inlineformset_factory(
+    Task, TaskVariant, form=TaskVariantForm,fields=['assignee', 'variant', 'note'], extra=3, can_delete=False
+)

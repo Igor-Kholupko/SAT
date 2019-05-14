@@ -1,6 +1,6 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 from django.core.validators import MinLengthValidator
-from django.contrib.postgres.fields import JSONField
 from django.utils.translation import ugettext_lazy as _
 from django.utils.text import slugify
 
@@ -84,6 +84,9 @@ class StudyClass(models.Model):
         return '{dsc} {grp}'.format(dsc=self.discipline, grp=self.group)
 
 
+User = get_user_model()
+
+
 class Task(models.Model):
     title = models.CharField(
         _('title'),
@@ -94,10 +97,12 @@ class Task(models.Model):
         null=True,
         blank=True
     )
-    variant = JSONField(
-        _('variant'),
-        null=True,
-        blank=True
+    variants = models.ManyToManyField(
+        User,
+        related_name='variants',
+        related_query_name='variant',
+        through='TaskVariant',
+        through_fields=('task', 'assignee')
     )
     deadline = models.DateField(
         _('deadline'),
@@ -134,6 +139,13 @@ class Task(models.Model):
     def clean(self):
         data = super().clean()
         return data
+
+
+class TaskVariant(models.Model):
+    task = models.ForeignKey(Task, models.CASCADE)
+    assignee = models.ForeignKey(User, models.CASCADE)
+    variant = models.TextField(_("Variant"), null=True, blank=True)
+    note = models.TextField(_("Note"), null=True, blank=True)
 
 
 class Lesson(models.Model):

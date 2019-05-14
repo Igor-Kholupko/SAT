@@ -2,6 +2,12 @@ from django.template.defaulttags import register
 
 
 @register.filter
+def get_task_variant(user, task):
+    qs = task.taskvariant_set.filter(assignee=user)
+    return qs.first if qs.exists() else None
+
+
+@register.filter
 def get_item(dictionary, key):
     return dictionary.get(key)
 
