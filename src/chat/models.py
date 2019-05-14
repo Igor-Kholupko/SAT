@@ -85,6 +85,11 @@ class ChatGroup(models.Model):
         return qs
 
     @classmethod
+    def get_or_create_chat(cls, *users):
+        qs = cls.get_chats_by_users(*users, use_uuid=False)
+        return qs.first() if qs.exists() else cls.create_chat(*users)
+
+    @classmethod
     def create_chat(cls, *users):
         instance = cls.objects.create(uuid=cls.make_uuid(*users))
         instance.users.add(*users)
