@@ -1,4 +1,8 @@
 <form id="createTask" method="post" style="height: 100%">{% csrf_token %}
+<input type="hidden" name="taskvariant_set-TOTAL_FORMS" value="3" id="id_taskvariant_set-TOTAL_FORMS">
+<input type="hidden" name="taskvariant_set-INITIAL_FORMS" value="0" id="id_taskvariant_set-INITIAL_FORMS">
+<input type="hidden" name="taskvariant_set-MIN_NUM_FORMS" value="0" id="id_taskvariant_set-MIN_NUM_FORMS">
+<input type="hidden" name="taskvariant_set-MAX_NUM_FORMS" value="1000" id="id_taskvariant_set-MAX_NUM_FORMS">
 <input type="hidden" name="action" value="post_task">
 <input type="hidden" name="study_class" value="{{ sc.pk }}">
     <div class="task_name_area">
@@ -20,9 +24,10 @@
                     <tr>
                         <th scope="row" >{{ forloop.counter }}</th>
                         <td>{{ student.user|stringformat:"s" }}</td>
-                        <td><input type="text" class="option_input"></td>
-                        <td><input type="text" class="node_input"></td>
+                        <td><input type="text" class="option_input" name="taskvariant_set-{{ forloop.counter }}-variant"></td>
+                        <td><input type="text" class="node_input" name="taskvariant_set-{{ forloop.counter }}-note"></td>
                     </tr>
+                    <input type="hidden" name="taskvariant_set-{{ forloop.counter }}-assignee" value="{{ student.user_id }}">
                 {% endfor %}
                 </tbody>
             </table>

@@ -15,13 +15,15 @@
             <tbody>
             {% for student, attandences, marks in students_list %}
                 <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
                     {% with marks|get_item:task.id as mark %}
-                        <th scope="row">{{ forloop.counter }}</th>
                         <td>{{ student.user|stringformat:"s" }}</td>
                             <td class="date">{% if mark %}{{ mark.lesson.date|date }}{% else %}-{% endif %}</td>
                             <td class="mark{% if can_change %} editable{% endif %} student-{{ student.user.pk }} task-{{ task.pk }} {% if not mark %}no-mark{% endif %}">{% if mark %}{{ mark|stringformat:"s" }}{% else %}-{% endif %}</td>
-                        <td></td>
-                        <td></td>
+                    {% endwith %}
+                    {% with student.user|get_task_variant:task as var %}
+                        <td class="var variant{% if can_change %} editable {% if var %}id-{{ var.id }}{% else %}no-var{% endif %}{% endif %}">{% if var %}{{ var.variant }}{% endif %}</td>
+                        <td class="var note{% if can_change %} editable {% if var %}id-{{ var.id }}{% else %}no-var{% endif %}{% endif %}">{{ var.note }}</td>
                     {% endwith %}
                 </tr>
             {% endfor %}
