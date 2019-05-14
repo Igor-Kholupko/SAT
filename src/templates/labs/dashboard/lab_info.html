@@ -19,7 +19,7 @@
                         <th scope="row">{{ forloop.counter }}</th>
                         <td>{{ student.user|stringformat:"s" }}</td>
                             <td class="date">{% if mark %}{{ mark.lesson.date|date }}{% else %}-{% endif %}</td>
-                            <td class="mark{% if can_change %} editable{% endif %} student-{{ student.user.pk }} task-{{ task.pk }}">{% if mark %}{{ mark|stringformat:"s" }}{% else %}-{% endif %}</td>
+                            <td class="mark{% if can_change %} editable{% endif %} student-{{ student.user.pk }} task-{{ task.pk }} {% if not mark %}no-mark{% endif %}">{% if mark %}{{ mark|stringformat:"s" }}{% else %}-{% endif %}</td>
                         <td></td>
                         <td></td>
                     {% endwith %}
