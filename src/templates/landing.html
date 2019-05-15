@@ -1,0 +1,17 @@
+{% load i18n static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{% trans 'SAT' %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
+    <h1>{% trans 'Project underway' %}</h1>
+    <p>{% trans 'Sorry, but SAT project still in development process.' %}</p>
+    {% with github_link='<a href="https://github.com/Igor-Kholupko/sat">GitHub</a>' %}
+    <p>{% blocktrans %}More information you can find on {{ github_link }} page.{% endblocktrans %}</p>
+    {% endwith %}
+</body>
+</html>
