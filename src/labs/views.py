@@ -42,7 +42,7 @@ class UserContextMixin(LoginRequiredMixin, ContextMixin):
                         for study_class in user.student.group.study_classes.all()
                     ]
                 }})
-        return super().get_context_data(**kwargs, **{'menu': menu}, **{'formset': TaskVariantFormSet()})
+        return super().get_context_data(**kwargs, **{'menu': menu})
 
 
 class DashboardView(UserContextMixin, AjaxableResponseMixin, TemplateView):
